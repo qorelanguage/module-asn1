@@ -1,0 +1,25 @@
+asn1 module for Qore
+version 0.0.1 by David Nichols
+
+Requires qore 0.7.0 and openssl headers and libraries to build.
+
+Documentation in docs/asn1-module-doc.html (using TiddlyWiki)
+
+test/example script: test-asn1.q
+
+BUILD AND INSTALL
+-----------------
+
+configure
+make
+sudo make install
+
+The configure script will find out where your qore module directory is found and set this for the install directory.
+
+BUILD FROM SVN
+--------------
+
+reconf.sh
+configure
+make
+sudo make install
