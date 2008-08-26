@@ -35,53 +35,40 @@ typedef std::vector<AbstractQoreAsn1Object *> olist_t;
 class QoreAsn1Sequence : public AbstractQoreAsn1Object
 {
    protected:
+      mutable QoreThreadLock m;
       olist_t olist;
 
-      DLLLOCAL virtual ~QoreAsn1Sequence()
-      {
-	 for (olist_t::iterator i = olist.begin(), e = olist.end(); i != e; ++i) {
+      DLLLOCAL virtual ~QoreAsn1Sequence() {
+	 for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i) {
 	    (*i)->deref();
 	 }
-      }
-
-      DLLLOCAL virtual int getChildDerSize() const
-      {
-	 int size = 0;
-	 
-	 for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i) {
-	    size += (*i)->getDerSize();
-	 }
-
-	 return size;
       }
 
    public:
       DLLLOCAL QoreAsn1Sequence() {}
 
-      DLLLOCAL virtual int getDerSize() const
-      {
-	 int size = getChildDerSize();
-	 return 1 + getLen(size) + size;
-      }
+      DLLLOCAL BinaryNode *getDerData() const {
+	 BinaryNode *b = new BinaryNode();
+	 {
+	    AutoLocker al(m);
+	    //printd(5, "Ans1Sequence::getDerData() this=%08p, childDerSize=%d\n", this, cds);
 
-      DLLLOCAL BinaryNode *getDerData() const
-      {
-	 int cds = getChildDerSize();
-	 //printd(5, "Ans1Sequence::getDerData() this=%08p, childDerSize=%d\n", this, cds);
-	 BinaryNode *b = encodeDer(V_ASN1_SEQUENCE, cds);
-
-	 for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i) {
-	    SimpleRefHolder<BinaryNode> obj((*i)->getDerData());
-	    //printd(5, "Ans1Sequence::getDerData() this=%08p got %08p size=%d type=%d\n", this, *obj, obj->size(), ((char *)(obj->getPtr()))[0]);
-	    b->append(obj->getPtr(), obj->size());
+	    for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i) {
+	       SimpleRefHolder<BinaryNode> obj((*i)->getDerData());
+	       //printd(5, "Ans1Sequence::getDerData() this=%08p got %08p size=%d type=%d\n", this, *obj, obj->size(), ((char *)(obj->getPtr()))[0]);
+	       b->append(obj->getPtr(), obj->size());
+	    }
 	 }
 
+	 SimpleRefHolder<BinaryNode> prefix(encodeDer(V_ASN1_SEQUENCE, b->size()));
+	 b->prepend(prefix->getPtr(), prefix->size());
 	 return b;
       }
 
       // it is assumed that the object is already referenced for the assignment
       DLLLOCAL void add(AbstractQoreAsn1Object *o)
       {
+	 AutoLocker al(m);
 	 olist.push_back(o);
       }
 };

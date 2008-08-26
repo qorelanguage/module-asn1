@@ -39,10 +39,15 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
       }
 
    public:
-      DLLLOCAL QoreAsn1Integer(long v) {
-	 i = ASN1_STRING_type_new(V_ASN1_INTEGER);
-	 if (i)
-	    ASN1_INTEGER_set((ASN1_INTEGER *)i, v);
+      DLLLOCAL QoreAsn1Integer(int64 v) {
+	 QoreString str;
+	 str.sprintf("%lld", v);
+	 BIGNUM *bn = 0;
+	 if (!BN_dec2bn(&bn, str.getBuffer()))
+	    return;
+
+	 i = BN_to_ASN1_INTEGER(bn, 0);
+	 BN_free(bn);
       }
 
       // takes over ownership of n_i
@@ -53,22 +58,16 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
 	 return (bool)i;
       }
 
-      DLLLOCAL virtual int getDerSize() const
-      {
-	 int size = i2c_ASN1_INTEGER((ASN1_INTEGER *)i, 0);
-	 return size + getLen(size) + 1;
-      }
-
       DLLLOCAL BinaryNode *getDerData() const
       {
 	 int size = i2c_ASN1_INTEGER((ASN1_INTEGER *)i, 0);
 	 unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	 unsigned char *tmp = data;
 	 i2c_ASN1_INTEGER((ASN1_INTEGER *)i, &tmp);
-
-	 return encodeDer(V_ASN1_INTEGER, size, data);
 	 
-	 //return new BinaryNode(data, size);
+	 BinaryNode *rv = encodeDer(V_ASN1_INTEGER, size, data);
+	 free(data);
+	 return rv;
       }
 };
 

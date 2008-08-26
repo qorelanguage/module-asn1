@@ -35,7 +35,7 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 
       DLLLOCAL virtual ~QoreAsn1String()
       {
-	 if (!str)
+	 if (str)
 	    ASN1_STRING_free(str);
       }
 
@@ -66,14 +66,9 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 
       DLLLOCAL operator bool() const { return (bool)str; }
       
-      DLLLOCAL virtual int getDerSize() const
-      {
-	 return i2d_ASN1_bytes(str, 0, ASN1_STRING_type(str), V_ASN1_UNIVERSAL);
-      }
-
       DLLLOCAL BinaryNode *getDerData() const
       {
-	 int size = getDerSize();
+	 int size = i2d_ASN1_bytes(str, 0, ASN1_STRING_type(str), V_ASN1_UNIVERSAL);
 	 
 	 unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	 unsigned char *tmp = data;

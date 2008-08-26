@@ -57,14 +57,9 @@ class QoreAsn1ObjectIdentifier : public AbstractQoreAsn1Object
 	 return (bool)obj;
       }
 
-      DLLLOCAL virtual int getDerSize() const
-      {
-	 return i2d_ASN1_OBJECT(obj, 0);
-      }
-
       DLLLOCAL BinaryNode *getDerData() const
       {
-	 int size = getDerSize();
+	 int size = i2d_ASN1_OBJECT(obj, 0);
 	 
 	 unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	 unsigned char *tmp = data;

@@ -23,6 +23,8 @@ namespace asn1_test {
           "help"    : "help,h",
           "iters"   : "iters,i=i",
           "threads" : "threads,t=i" );
+
+    const SHA1_ID = 64;
 }
 
 class asn1_test::asn1_test {
@@ -33,6 +35,9 @@ class asn1_test::asn1_test {
         printf("QORE ans1 module v%s Test Script (%d thread%s, %d iteration%s per thread)\n", ASN1::ModuleVersion, 
                $.threads, $.threads == 1 ? "" : "s", 
                $.iters, $.iters == 1 ? "" : "s");
+
+	# seed the random number generator
+	srand(clock_getmicros());
 
         $.counter = new Counter();
         my $t = $.threads;
@@ -59,7 +64,7 @@ class asn1_test::asn1_test {
 	    my $msg = "hello";
 	    my $hash = SHA1_bin($msg);
 
-	    my $req = asn1_test::get_timestamp_req($hash);
+	    my $req = asn1_test::get_timestamp_req($hash, rand());
 
 	    # save to file
 	    #my $f = new File();
@@ -124,11 +129,12 @@ class asn1_test::asn1_test {
         $.thash.$msg = True;
     }
 
-    static private get_timestamp_req($hash) {
+    static private get_timestamp_req($hash, $nonce) {
     	my $seq = new ASN1Sequence();
 
 	$seq.add(new ASN1Integer(1));
 	$seq.add(asn1_test::get_message_imprint($hash));
+	$seq.add(new ASN1Integer($nonce));
 
 	return $seq;
     }
@@ -145,7 +151,7 @@ class asn1_test::asn1_test {
     static private get_algorithm_identifier() {
 	my $seq = new ASN1Sequence();
 
-	$seq.add(new ASN1ObjectIdentifier(64));
+	$seq.add(new ASN1ObjectIdentifier(SHA1_ID));
 
 	return $seq;
     }

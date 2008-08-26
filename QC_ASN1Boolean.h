@@ -36,14 +36,9 @@ class QoreAsn1Boolean : public AbstractQoreAsn1Object
    public:
       DLLLOCAL QoreAsn1Boolean(bool v) : b(v ? -1 : 0) {}
       
-      DLLLOCAL virtual int getDerSize() const
-      {
-	 return i2d_ASN1_BOOLEAN(b, 0);
-      }
-
       DLLLOCAL BinaryNode *getDerData() const
       {
-	 int size = getDerSize();
+	 int size = i2d_ASN1_BOOLEAN(b, 0);
 	 
 	 unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	 unsigned char *tmp = data;

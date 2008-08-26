@@ -30,7 +30,7 @@ class AbstractQoreAsn1Object : public AbstractPrivateData
    public:
       DLLLOCAL virtual ~AbstractQoreAsn1Object() {}
 
-      DLLLOCAL virtual int getDerSize() const = 0;
+      //DLLLOCAL virtual int getDerSize() const = 0;
       DLLLOCAL virtual BinaryNode *getDerData() const = 0;
       //DLLLOCAL virtual AbstractQoreNode *getQoreData() const = 0;
 
