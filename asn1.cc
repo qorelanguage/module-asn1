@@ -57,6 +57,148 @@ static AbstractQoreNode *ASN1OBJECT_getDer(QoreObject *self, AbstractQoreAsn1Obj
    return obj->getDerData();
 }
 
+static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
+{
+   const unsigned char *t = p + 1;
+   int len = AbstractQoreAsn1Object::decodeLen(t);
+   ASN1_STRING *str = d2i_ASN1_type_bytes(0, &p, len + (t - p), type);
+   if (!str) {
+      long e = ERR_get_error();
+      char buf[121];
+      ERR_error_string(e, buf);
+      xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 string (0x%x) data: %s", type, buf);
+      return 0;
+   }
+   qc = QC_ASN1STRING;
+   QoreAsn1String *obj = new QoreAsn1String(str);
+   return obj;
+}
+
+static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
+{
+   int type = *p;
+   switch (type) {
+      case V_ASN1_BOOLEAN: {
+	 qc = QC_ASN1BOOLEAN;
+	 QoreAsn1Boolean *obj = new QoreAsn1Boolean(p[2]);
+	 p += 3;
+	 return obj;
+      }
+
+      case V_ASN1_INTEGER: {
+	 ++p;
+	 int len = AbstractQoreAsn1Object::decodeLen(p);
+	 ASN1_INTEGER *i = c2i_ASN1_INTEGER(0, &p, len);
+	 if (!i) {
+	    xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 integer data");
+	    return 0;
+	 }
+	 qc = QC_ASN1INTEGER;
+	 QoreAsn1Integer *obj = new QoreAsn1Integer(i);
+	 return obj;
+      }
+
+      case V_ASN1_BIT_STRING:
+	 return parseAsn1String(B_ASN1_BIT_STRING, p, qc, xsink);
+
+      case V_ASN1_OCTET_STRING:
+	 return parseAsn1String(B_ASN1_OCTET_STRING, p, qc, xsink);
+
+      case V_ASN1_UTF8STRING:
+	 return parseAsn1String(B_ASN1_UTF8STRING, p, qc, xsink);
+
+      case V_ASN1_NUMERICSTRING:
+	 return parseAsn1String(B_ASN1_NUMERICSTRING, p, qc, xsink);
+
+      case V_ASN1_PRINTABLESTRING:
+	 return parseAsn1String(B_ASN1_PRINTABLESTRING, p, qc, xsink);
+
+      case V_ASN1_T61STRING:
+	 return parseAsn1String(B_ASN1_T61STRING, p, qc, xsink);
+
+      case V_ASN1_VIDEOTEXSTRING:
+	 return parseAsn1String(B_ASN1_VIDEOTEXSTRING, p, qc, xsink);
+
+      case V_ASN1_IA5STRING:
+	 return parseAsn1String(B_ASN1_IA5STRING, p, qc, xsink);
+
+      case V_ASN1_GRAPHICSTRING:
+	 return parseAsn1String(B_ASN1_GRAPHICSTRING, p, qc, xsink);
+
+      case V_ASN1_ISO64STRING:
+	 return parseAsn1String(B_ASN1_ISO64STRING, p, qc, xsink);
+
+      case V_ASN1_GENERALSTRING:
+	 return parseAsn1String(B_ASN1_GENERALSTRING, p, qc, xsink);
+
+      case V_ASN1_UNIVERSALSTRING:
+	 return parseAsn1String(B_ASN1_UNIVERSALSTRING, p, qc, xsink);
+
+      case V_ASN1_BMPSTRING:
+	 return parseAsn1String(B_ASN1_BMPSTRING, p, qc, xsink);
+
+      // object identifier
+      case V_ASN1_OBJECT: {
+	 const unsigned char *t = p + 1;
+	 int len = AbstractQoreAsn1Object::decodeLen(t);
+	 //printd(5, "parseAsn1Object() type=%d, len=%d, 1st byte=0x%x\n", type, len, *t);
+	 ASN1_OBJECT *o = d2i_ASN1_OBJECT(0, &p, len + (t - p));
+	 if (!o) {
+	    long e = ERR_get_error();
+	    char buf[121];
+	    ERR_error_string(e, buf);
+	    xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "error decoding ASN1 object identifier: %s", buf);
+	    return 0;
+	 }
+	 qc = QC_ASN1OBJECTIDENTIFIER;
+	 return new QoreAsn1ObjectIdentifier(o);
+      }
+
+      case V_ASN1_SEQUENCE: {
+	 ++p;
+	 int len = AbstractQoreAsn1Object::decodeLen(p);
+	 SimpleRefHolder<QoreAsn1Sequence> seq(new QoreAsn1Sequence());
+	 const unsigned char *end = p + len;
+
+	 while (p < end) {
+	    const QoreClass *qc;
+	    AbstractQoreAsn1Object *obj = parseAsn1Object(p, qc, xsink);
+	    if (!obj)
+	       return 0;
+	    seq->add(obj);
+	 }
+
+	 qc = QC_ASN1SEQUENCE;
+	 return seq.release();
+      }
+   }
+
+   xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "don't know how to decode ASN1 identifier octet 0x%x", *p);
+   return 0;
+}
+
+static AbstractQoreNode *f_parse(const QoreListNode *params, ExceptionSink *xsink)
+{
+   const BinaryNode *b = test_binary_param(params, 0);
+   if (!b) {
+      xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "expecting a sole binary object argument in DER format to ASN1Object::parse()");
+      return 0;
+   }
+
+   const unsigned char *p = (const unsigned char *)b->getPtr();
+   if (!p)
+      return 0;
+
+   const QoreClass *qc;
+   AbstractQoreAsn1Object *obj = parseAsn1Object(p, qc, xsink);
+   if (!obj)
+      return 0;
+
+   QoreObject *qo = new QoreObject(qc, getProgram());
+   qo->setPrivate(qc->getID(), obj);
+   return qo;
+}
+
 QoreStringNode *asn1_module_init()
 {
    QoreClass *QC_ASN1OBJECT = new QoreClass("ASN1Object");
@@ -66,6 +208,10 @@ QoreStringNode *asn1_module_init()
 
    QC_ASN1OBJECT->addMethod("getDer",    (q_method_t)ASN1OBJECT_getDer);
 
+   // static methods
+   QC_ASN1OBJECT->addStaticMethod("parse", f_parse);
+
+   ASN1_NS.addSystemClass(QC_ASN1OBJECT);
    ASN1_NS.addSystemClass(initASN1SequenceClass(QC_ASN1OBJECT));
    ASN1_NS.addSystemClass(initASN1IntegerClass(QC_ASN1OBJECT));
    ASN1_NS.addSystemClass(initASN1ObjectIdentifierClass(QC_ASN1OBJECT));
@@ -73,6 +219,8 @@ QoreStringNode *asn1_module_init()
    ASN1_NS.addSystemClass(initASN1StringClass(QC_ASN1OBJECT));
 
    // add constants
+   ASN1_NS.addConstant("ModuleVersion",           new QoreStringNode(QORE_ASN1_VERSION));
+
    ASN1_NS.addConstant("V_ASN1_BIT_STRING",       new QoreBigIntNode(V_ASN1_BIT_STRING));
    ASN1_NS.addConstant("V_ASN1_OCTET_STRING",     new QoreBigIntNode(V_ASN1_OCTET_STRING));
    ASN1_NS.addConstant("V_ASN1_UTF8STRING",       new QoreBigIntNode(V_ASN1_UTF8STRING));

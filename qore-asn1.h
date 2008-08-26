@@ -27,6 +27,7 @@
 
 #include <openssl/asn1.h>
 
+#include "AbstractQoreAsn1Object.h"
 #include "QC_ASN1Sequence.h"
 #include "QC_ASN1Integer.h"
 #include "QC_ASN1ObjectIdentifier.h"

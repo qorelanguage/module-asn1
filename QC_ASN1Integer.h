@@ -44,6 +44,9 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
 	 if (i)
 	    ASN1_INTEGER_set((ASN1_INTEGER *)i, v);
       }
+
+      // takes over ownership of n_i
+      DLLLOCAL QoreAsn1Integer(ASN1_STRING *n_i) : i(n_i) {}
       
       DLLLOCAL operator bool() const
       {

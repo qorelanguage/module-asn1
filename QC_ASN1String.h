@@ -50,6 +50,9 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	 ASN1_STRING_set(str, content->getBuffer(), content->strlen());
       }
 
+      // takes over ownership of n_str
+      DLLLOCAL QoreAsn1String(ASN1_STRING *n_str) : str(n_str) {}
+
       DLLLOCAL QoreAsn1String(const BinaryNode *b, int type = V_ASN1_OCTET_STRING)
       {
 	 //printd(5, "QoreAsn1String::QoreAsn1String() this=%08p type=%d len=%d ptr=%08p\n", this, type, b->size(), b->getPtr());

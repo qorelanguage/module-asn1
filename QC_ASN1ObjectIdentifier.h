@@ -49,6 +49,9 @@ class QoreAsn1ObjectIdentifier : public AbstractQoreAsn1Object
 	 obj = OBJ_txt2obj(str, n);
       }
 
+      // takes over ownership of n_obj
+      DLLLOCAL QoreAsn1ObjectIdentifier(ASN1_OBJECT *n_obj) : obj(n_obj) {}
+
       DLLLOCAL operator bool() const
       {
 	 return (bool)obj;
