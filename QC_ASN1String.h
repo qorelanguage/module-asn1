@@ -83,6 +83,28 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	 return new BinaryNode(data, size);
       }
 
+      DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
+	 SimpleRefHolder<BinaryNode> b(getDerData());
+	 const unsigned char *p = ((const unsigned char *)b->getPtr()) + 1;
+	 decodeLen(p);
+	 int hlen = (char *)p - (char *)b->getPtr();
+
+	 switch (ASN1_STRING_type(str)) {
+	    case V_ASN1_UTF8STRING:
+	       return new QoreStringNode((const char *)p, b->size() - hlen, QCS_UTF8);
+
+	    case V_ASN1_NUMERICSTRING:
+	    case V_ASN1_PRINTABLESTRING:
+	    case V_ASN1_VISIBLESTRING:
+	       return new QoreStringNode((const char *)p, b->size() - hlen);
+	 }
+
+	 BinaryNode *rv = new BinaryNode();
+	 //printd(5, "getQoreData() new binarynode len=%d\n", b->size() - hlen);
+	 rv->append(p, b->size() - hlen);
+	 return rv;
+      }
+
       //DLLLOCAL bool value() const { }
 };
 

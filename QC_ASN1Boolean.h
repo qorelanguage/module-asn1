@@ -52,6 +52,10 @@ class QoreAsn1Boolean : public AbstractQoreAsn1Object
       }
 
       DLLLOCAL bool value() const { return (bool)b; }
+
+      DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
+	 return get_bool_node(b);
+      }
 };
 
 #endif

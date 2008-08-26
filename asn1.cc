@@ -57,6 +57,11 @@ static AbstractQoreNode *ASN1OBJECT_getDer(QoreObject *self, AbstractQoreAsn1Obj
    return obj->getDerData();
 }
 
+static AbstractQoreNode *ASN1OBJECT_getQoreData(QoreObject *self, AbstractQoreAsn1Object *obj, const QoreListNode *params, ExceptionSink *xsink)
+{
+   return obj->getQoreData();
+}
+
 static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
 {
    const unsigned char *t = p + 1;
@@ -205,7 +210,8 @@ QoreStringNode *asn1_module_init()
 
    QC_ASN1OBJECT->setConstructor(ASN1OBJECT_constructor);
 
-   QC_ASN1OBJECT->addMethod("getDer",    (q_method_t)ASN1OBJECT_getDer);
+   QC_ASN1OBJECT->addMethod("getDer",      (q_method_t)ASN1OBJECT_getDer);
+   QC_ASN1OBJECT->addMethod("getQoreData", (q_method_t)ASN1OBJECT_getQoreData);
 
    // static methods
    QC_ASN1OBJECT->addStaticMethod("parse", f_parse);

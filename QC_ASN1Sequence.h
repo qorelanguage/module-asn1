@@ -86,8 +86,19 @@ class QoreAsn1Sequence : public AbstractQoreAsn1Object
 	    o->deref();
 	    o = obj;
 	 }
+
+
 	 AutoLocker al(m);
 	 olist.push_back(o);
+      }
+
+      DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
+	 QoreListNode *rv = new QoreListNode;
+	 AutoLocker al(m);
+	 for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i)
+	    rv->push((*i)->getQoreData());
+
+	 return rv;
       }
 };
 

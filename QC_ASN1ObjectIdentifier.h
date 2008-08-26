@@ -87,6 +87,10 @@ class QoreAsn1ObjectIdentifier : public AbstractQoreAsn1Object
 	 
 	 return new QoreStringNode(buf, strlen(buf), MAX_OBJ_STR, QCS_DEFAULT);
       }
+
+      DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
+	 return getName();
+      }
 };
 
 #endif

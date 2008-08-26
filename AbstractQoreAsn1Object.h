@@ -32,7 +32,7 @@ class AbstractQoreAsn1Object : public AbstractPrivateData
 
       DLLLOCAL virtual AbstractQoreAsn1Object *copy() const = 0;
       DLLLOCAL virtual BinaryNode *getDerData() const = 0;
-      //DLLLOCAL virtual AbstractQoreNode *getQoreData() const = 0;
+      DLLLOCAL virtual AbstractQoreNode *getQoreData() const = 0;
       DLLLOCAL virtual bool isContainer() const { return false; }
 
       DLLLOCAL static int decodeLen(const unsigned char *&ptr) {

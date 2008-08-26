@@ -45,7 +45,7 @@ class asn1_test::asn1_test {
             $.counter.inc();
             background $.run_tests();
         }
-        
+
         $.counter.waitForZero();
 
         my $ntests = elements $.thash;
@@ -73,7 +73,7 @@ class asn1_test::asn1_test {
 
 	    my $req2 = ASN1Object::parse($req.getDer());
 
-	    #printf("%N\n", $req2);
+	    #printf("%N\n", $req2.getQoreData());
 
 	    $.test_value($req.getDer(), $req2.getDer(), "ASN1 generation and parsing");
             $.ip += 1;
