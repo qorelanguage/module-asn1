@@ -53,8 +53,11 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
       // takes over ownership of n_i
       DLLLOCAL QoreAsn1Integer(ASN1_STRING *n_i) : i(n_i) {}
       
-      DLLLOCAL operator bool() const
-      {
+      DLLLOCAL AbstractQoreAsn1Object *copy() const {
+	 return new QoreAsn1Integer(ASN1_STRING_dup(i));
+      }
+
+      DLLLOCAL operator bool() const {
 	 return (bool)i;
       }
 

@@ -52,13 +52,15 @@ class QoreAsn1ObjectIdentifier : public AbstractQoreAsn1Object
       // takes over ownership of n_obj
       DLLLOCAL QoreAsn1ObjectIdentifier(ASN1_OBJECT *n_obj) : obj(n_obj) {}
 
-      DLLLOCAL operator bool() const
-      {
+      DLLLOCAL AbstractQoreAsn1Object *copy() const {
+	 return new QoreAsn1ObjectIdentifier(OBJ_dup(obj));
+      }
+
+      DLLLOCAL operator bool() const {
 	 return (bool)obj;
       }
 
-      DLLLOCAL BinaryNode *getDerData() const
-      {
+      DLLLOCAL BinaryNode *getDerData() const {
 	 int size = i2d_ASN1_OBJECT(obj, 0);
 	 
 	 unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * size);

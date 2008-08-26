@@ -70,8 +70,7 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
       return 0;
    }
    qc = QC_ASN1STRING;
-   QoreAsn1String *obj = new QoreAsn1String(str);
-   return obj;
+   return new QoreAsn1String(str);
 }
 
 static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)

@@ -46,7 +46,7 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	 str = ASN1_STRING_type_new(type);
 	 if (!str)
 	    return;
-
+	 
 	 ASN1_STRING_set(str, content->getBuffer(), content->strlen());
       }
 
@@ -62,6 +62,9 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	    return;
 
 	 ASN1_STRING_set(str, b->getPtr(), b->size());
+      }
+      DLLLOCAL virtual AbstractQoreAsn1Object *copy() const {
+	 return new QoreAsn1String(ASN1_STRING_dup(str));
       }
 
       DLLLOCAL operator bool() const { return (bool)str; }

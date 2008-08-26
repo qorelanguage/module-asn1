@@ -50,7 +50,7 @@ static AbstractQoreNode *ASN1SEQUENCE_add(QoreObject *self, QoreAsn1Sequence *se
 	 xsink->raiseException("ASN1SEQUENCE-ADD-ERROR", "expecting an object derived from ASN1Object as the sole argument to ASN1Sequence::add()");
       return 0;
    }
-   // here we use the reference to add to the sequence
+   // we pass the reference on to the sequence
    seq->add(obj);
    return 0;
 }

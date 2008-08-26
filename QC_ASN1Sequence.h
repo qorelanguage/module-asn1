@@ -32,6 +32,7 @@ DLLLOCAL QoreClass *initASN1SequenceClass(QoreClass *parent);
 
 typedef std::vector<AbstractQoreAsn1Object *> olist_t;
 
+// we make sure there are no deadlocks and infinitely recursive trees by copying container objects
 class QoreAsn1Sequence : public AbstractQoreAsn1Object
 {
    protected:
@@ -46,6 +47,18 @@ class QoreAsn1Sequence : public AbstractQoreAsn1Object
 
    public:
       DLLLOCAL QoreAsn1Sequence() {}
+
+      DLLLOCAL AbstractQoreAsn1Object *copy() const
+      {
+	 QoreAsn1Sequence *rv = new QoreAsn1Sequence;
+	 AutoLocker al(m);
+	 for (olist_t::const_iterator i = olist.begin(), e = olist.end(); i != e; ++i)
+	    rv->olist.push_back((*i)->copy());
+
+	 return rv;
+      }
+
+      DLLLOCAL virtual bool isContainer() const { return true; }
 
       DLLLOCAL BinaryNode *getDerData() const {
 	 BinaryNode *b = new BinaryNode();
@@ -65,9 +78,14 @@ class QoreAsn1Sequence : public AbstractQoreAsn1Object
 	 return b;
       }
 
-      // it is assumed that the object is already referenced for the assignment
-      DLLLOCAL void add(AbstractQoreAsn1Object *o)
-      {
+      // referenced for addition
+      DLLLOCAL void add(AbstractQoreAsn1Object *o) {
+	 // copy and deref if the object is not unique and is a container
+	 if (!o->is_unique() && o->isContainer()) {
+	    AbstractQoreAsn1Object *obj = o->copy();
+	    o->deref();
+	    o = obj;
+	 }
 	 AutoLocker al(m);
 	 olist.push_back(o);
       }

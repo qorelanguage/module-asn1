@@ -35,6 +35,10 @@ class QoreAsn1Boolean : public AbstractQoreAsn1Object
 
    public:
       DLLLOCAL QoreAsn1Boolean(bool v) : b(v ? -1 : 0) {}
+
+      DLLLOCAL virtual AbstractQoreAsn1Object *copy() const {
+	 return new QoreAsn1Boolean(b);
+      }
       
       DLLLOCAL BinaryNode *getDerData() const
       {
