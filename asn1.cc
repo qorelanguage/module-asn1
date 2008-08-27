@@ -66,7 +66,8 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
 {
    const unsigned char *t = p + 1;
    int len = AbstractQoreAsn1Object::decodeLen(t);
-   ASN1_STRING *str = d2i_ASN1_type_bytes(0, &p, len + (t - p), type);
+   // the cast on the following line is for older openssl versions
+   ASN1_STRING *str = d2i_ASN1_type_bytes(0, (unsigned char **)&p, len + (t - p), type);
    if (!str) {
       long e = ERR_get_error();
       char buf[121];
@@ -92,7 +93,8 @@ static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const Qo
       case V_ASN1_INTEGER: {
 	 ++p;
 	 int len = AbstractQoreAsn1Object::decodeLen(p);
-	 ASN1_INTEGER *i = c2i_ASN1_INTEGER(0, &p, len);
+	 // the cast on the following line is for older openssl versions
+	 ASN1_INTEGER *i = c2i_ASN1_INTEGER(0, (unsigned char **)&p, len);
 	 if (!i) {
 	    xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 integer data");
 	    return 0;
@@ -146,7 +148,8 @@ static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const Qo
 	 const unsigned char *t = p + 1;
 	 int len = AbstractQoreAsn1Object::decodeLen(t);
 	 //printd(5, "parseAsn1Object() type=%d, len=%d, 1st byte=0x%x\n", type, len, *t);
-	 ASN1_OBJECT *o = d2i_ASN1_OBJECT(0, &p, len + (t - p));
+	 // the cast on the following line is for older openssl versions
+	 ASN1_OBJECT *o = d2i_ASN1_OBJECT(0, (unsigned char **)&p, len + (t - p));
 	 if (!o) {
 	    long e = ERR_get_error();
 	    char buf[121];
