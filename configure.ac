@@ -234,6 +234,30 @@ for dir in "${with_openssl_dir}" /usr / /usr/local /opt/gnu /opt/openssl /usr/lo
 done
 if test -z "$OPENSSL_LDFLAGS"; then
     AC_MSG_ERROR([no openssl library found])
+else
+    # check for openssl const correctness (later versions have it)
+    SAVE_CPPFLAGS="$CPPFLAGS"
+    SAVE_LDFLAGS="$LDFLAGS"
+    CPPFLAGS="$CPPFLAGS $OPENSSL_CPPFLAGS"
+    LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
+
+    AC_MSG_CHECKING([const correctness in openssl asn1 header])
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <openssl/asn1.h>
+         ]],[[
+const unsigned char *p;
+d2i_ASN1_type_bytes(0, &p, 0, 0);
+        ]])],openssl_const_ok=yes, openssl_const_ok=no)
+
+    CPPFLAGS="$SAVE_CPPFLAGS"
+    LDFLAGS="$SAVE_LDFLAGS"
+
+    if test "${openssl_const_ok}" = "yes"; then
+       AC_MSG_RESULT([ok])
+       AC_DEFINE(HAVE_OPENSSL_CONST, 1, Define if openssl headers correctly use const)
+    else
+       AC_MSG_RESULT([old style, not const correct])
+    fi
 fi
 
 set_qore_cppflags()
@@ -310,15 +334,15 @@ if test -z "$QORE_LDFLAGS"; then
 else
    # test qore version
    AC_MSG_CHECKING([qore library version])
-   qv_major=`grep define.VERSION_MAJOR $QORE_INC_DIR/qore/unix-config.h|cut -f3 -d\  2>/dev/null`
+   qv_major=`grep QORE_VERSION_MAJOR $QORE_INC_DIR/qore/qore-version.h|cut -f3 -d\  2>/dev/null`
    if test -z "$qv_major"; then
       AC_MSG_ERROR([cannot determine; check Qore header files in $QORE_INC_DIR])
    elif test "$qv_major" = "0"; then
-      qv_minor=`grep define.VERSION_MINOR $QORE_INC_DIR/qore/unix-config.h|cut -f3 -d\  2>/dev/null`
+      qv_minor=`grep QORE_VERSION_MINOR $QORE_INC_DIR/qore/qore-version.h|cut -f3 -d\  2>/dev/null`
       if test "$qv_version_minor" = "7"; then
       	 AC_MSG_ERROR([invalid; this module requires version 0.7.0])
       fi
-      qore_version=`grep define.VERSION.\" $QORE_INC_DIR/qore/unix-config.h|cut -f3 -d\ |sed s/\"//g 2>/dev/null`
+      qore_version=`grep QORE_VERSION.\" $QORE_INC_DIR/qore/qore-version.h|cut -f3 -d\ |sed s/\"//g 2>/dev/null`
       AC_MSG_RESULT([${qore_version} OK])
 
       libdir=`qore --module-dir`
@@ -435,17 +459,17 @@ fi
 AC_SUBST(OTHER_LIBS)
 
 # save more version information in config.h
-VERSION_MAJOR=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f1 -d.`
-VERSION_MINOR=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f2 -d.`
-VERSION_SUB=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f3 -d.`
+MODULE_VERSION_MAJOR=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f1 -d.`
+MODULE_VERSION_MINOR=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f2 -d.`
+MODULE_VERSION_SUB=`echo $PACKAGE_VERSION | cut -f3 -d\  | sed s/\"//g | cut -f3 -d.`
 
 # set version information
-AC_DEFINE_UNQUOTED([VERSION_MAJOR], $VERSION_MAJOR, [major version number])
-AC_DEFINE_UNQUOTED([VERSION_MINOR], $VERSION_MINOR, [minor version number])
-AC_DEFINE_UNQUOTED([VERSION_SUB], $VERSION_SUB, [sub version number])
-AC_DEFINE_UNQUOTED([TARGET_ARCH], "$ARCH", [host type])
-AC_DEFINE_UNQUOTED([TARGET_OS], "$OS", [host type])
-AC_DEFINE_UNQUOTED([TARGET_BITS], $bits, [32 or 64 bit build])
+AC_DEFINE_UNQUOTED([MODULE_VERSION_MAJOR], $MODULE_VERSION_MAJOR, [major version number])
+AC_DEFINE_UNQUOTED([MODULE_VERSION_MINOR], $MODULE_VERSION_MINOR, [minor version number])
+AC_DEFINE_UNQUOTED([MODULE_VERSION_SUB], $MODULE_VERSION_SUB, [sub version number])
+AC_DEFINE_UNQUOTED([MODULE_TARGET_ARCH], "$ARCH", [host type])
+AC_DEFINE_UNQUOTED([MODULE_TARGET_OS], "$OS", [host type])
+AC_DEFINE_UNQUOTED([MODULE_TARGET_BITS], $bits, [32 or 64 bit build])
 
 AM_CONDITIONAL([COND_DEBUG],      [test "$enable_debug" = yes])
 AM_CONDITIONAL([COND_PROFILE],    [test "$enable_profile" = yes])

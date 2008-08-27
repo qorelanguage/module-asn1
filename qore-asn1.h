@@ -25,7 +25,15 @@
 
 #include <qore/Qore.h>
 
+#include "config.h"
+
 #include <openssl/asn1.h>
+
+#ifndef HAVE_OPENSSL_CONST
+#define OPENSSL_CONST
+#else
+#define OPENSSL_CONST const
+#endif
 
 #include "AbstractQoreAsn1Object.h"
 #include "QC_ASN1Sequence.h"
@@ -35,6 +43,7 @@
 #include "QC_ASN1String.h"
 #include "QC_ASN1OctetString.h"
 #include "QC_ASN1UTF8String.h"
+#include "QC_ASN1BitString.h"
 
 DLLLOCAL extern qore_classid_t CID_ASN1OBJECT;
 

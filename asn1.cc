@@ -66,8 +66,8 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
 {
    const unsigned char *t = p + 1;
    int len = AbstractQoreAsn1Object::decodeLen(t);
-   // the cast on the following line is for older openssl versions
-   ASN1_STRING *str = d2i_ASN1_type_bytes(0, (unsigned char **)&p, len + (t - p), type);
+   // the cast on the following line is in case of older openssl versions
+   ASN1_STRING *str = d2i_ASN1_type_bytes(0, (OPENSSL_CONST unsigned char **)&p, len + (t - p), type);
    if (!str) {
       long e = ERR_get_error();
       char buf[121];
@@ -81,6 +81,11 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
       case V_ASN1_OCTET_STRING:
 	 qc = QC_ASN1OCTETSTRING;
 	 return new QoreAsn1OctetString(str);
+	 break;
+
+      case V_ASN1_BIT_STRING:
+	 qc = QC_ASN1BITSTRING;
+	 return new QoreAsn1BitString(str);
 	 break;
 
       case V_ASN1_UTF8STRING:
@@ -109,7 +114,7 @@ static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const Qo
 	 ++p;
 	 int len = AbstractQoreAsn1Object::decodeLen(p);
 	 // the cast on the following line is for older openssl versions
-	 ASN1_INTEGER *i = c2i_ASN1_INTEGER(0, (unsigned char **)&p, len);
+	 ASN1_INTEGER *i = c2i_ASN1_INTEGER(0, (OPENSSL_CONST unsigned char **)&p, len);
 	 if (!i) {
 	    xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 integer data");
 	    return 0;
@@ -164,7 +169,7 @@ static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const Qo
 	 int len = AbstractQoreAsn1Object::decodeLen(t);
 	 //printd(5, "parseAsn1Object() type=%d, len=%d, 1st byte=0x%x\n", type, len, *t);
 	 // the cast on the following line is for older openssl versions
-	 ASN1_OBJECT *o = d2i_ASN1_OBJECT(0, (unsigned char **)&p, len + (t - p));
+	 ASN1_OBJECT *o = d2i_ASN1_OBJECT(0, (OPENSSL_CONST unsigned char **)&p, len + (t - p));
 	 if (!o) {
 	    long e = ERR_get_error();
 	    char buf[121];
@@ -242,6 +247,7 @@ QoreStringNode *asn1_module_init()
    ASN1_NS.addSystemClass(initASN1StringClass(QC_ASN1OBJECT));
    ASN1_NS.addSystemClass(initASN1OctetStringClass(QC_ASN1STRING));
    ASN1_NS.addSystemClass(initASN1UTF8StringClass(QC_ASN1STRING));
+   ASN1_NS.addSystemClass(initASN1BitStringClass(QC_ASN1STRING));
 
    // add constants
    ASN1_NS.addConstant("ModuleVersion",           new QoreStringNode(QORE_ASN1_VERSION));
