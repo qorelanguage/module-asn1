@@ -250,22 +250,32 @@ QoreStringNode *asn1_module_init()
    ASN1_NS.addSystemClass(initASN1BitStringClass(QC_ASN1STRING));
 
    // add constants
-   ASN1_NS.addConstant("ModuleVersion",           new QoreStringNode(QORE_ASN1_VERSION));
+   ASN1_NS.addConstant("ModuleVersion",            new QoreStringNode(QORE_ASN1_VERSION));
 
-   ASN1_NS.addConstant("V_ASN1_BIT_STRING",       new QoreBigIntNode(V_ASN1_BIT_STRING));
-   ASN1_NS.addConstant("V_ASN1_OCTET_STRING",     new QoreBigIntNode(V_ASN1_OCTET_STRING));
-   ASN1_NS.addConstant("V_ASN1_UTF8STRING",       new QoreBigIntNode(V_ASN1_UTF8STRING));
-   ASN1_NS.addConstant("V_ASN1_NUMERICSTRING",    new QoreBigIntNode(V_ASN1_NUMERICSTRING));
-   ASN1_NS.addConstant("V_ASN1_PRINTABLESTRING",  new QoreBigIntNode(V_ASN1_PRINTABLESTRING));
-   ASN1_NS.addConstant("V_ASN1_T61STRING",        new QoreBigIntNode(V_ASN1_T61STRING));
-   ASN1_NS.addConstant("V_ASN1_TELETEXSTRING",    new QoreBigIntNode(V_ASN1_TELETEXSTRING));
-   ASN1_NS.addConstant("V_ASN1_IA5STRING",        new QoreBigIntNode(V_ASN1_IA5STRING));
-   ASN1_NS.addConstant("V_ASN1_GRAPHICSTRING",    new QoreBigIntNode(V_ASN1_GRAPHICSTRING));
-   ASN1_NS.addConstant("V_ASN1_ISO64STRING",      new QoreBigIntNode(V_ASN1_ISO64STRING));
-   ASN1_NS.addConstant("V_ASN1_VISIBLESTRING",    new QoreBigIntNode(V_ASN1_VISIBLESTRING));
-   ASN1_NS.addConstant("V_ASN1_GENERALSTRING",    new QoreBigIntNode(V_ASN1_GENERALSTRING));
-   ASN1_NS.addConstant("V_ASN1_UNIVERSALSTRING",  new QoreBigIntNode(V_ASN1_UNIVERSALSTRING));
-   ASN1_NS.addConstant("V_ASN1_BMPSTRING",        new QoreBigIntNode(V_ASN1_BMPSTRING));
+   ASN1_NS.addConstant("V_ASN1_BIT_STRING",        new QoreBigIntNode(V_ASN1_BIT_STRING));
+   ASN1_NS.addConstant("V_ASN1_OCTET_STRING",      new QoreBigIntNode(V_ASN1_OCTET_STRING));
+   ASN1_NS.addConstant("V_ASN1_UTF8STRING",        new QoreBigIntNode(V_ASN1_UTF8STRING));
+   ASN1_NS.addConstant("V_ASN1_NUMERICSTRING",     new QoreBigIntNode(V_ASN1_NUMERICSTRING));
+   ASN1_NS.addConstant("V_ASN1_PRINTABLESTRING",   new QoreBigIntNode(V_ASN1_PRINTABLESTRING));
+   ASN1_NS.addConstant("V_ASN1_T61STRING",         new QoreBigIntNode(V_ASN1_T61STRING));
+   ASN1_NS.addConstant("V_ASN1_TELETEXSTRING",     new QoreBigIntNode(V_ASN1_TELETEXSTRING));
+   ASN1_NS.addConstant("V_ASN1_IA5STRING",         new QoreBigIntNode(V_ASN1_IA5STRING));
+   ASN1_NS.addConstant("V_ASN1_GRAPHICSTRING",     new QoreBigIntNode(V_ASN1_GRAPHICSTRING));
+   ASN1_NS.addConstant("V_ASN1_ISO64STRING",       new QoreBigIntNode(V_ASN1_ISO64STRING));
+   ASN1_NS.addConstant("V_ASN1_VISIBLESTRING",     new QoreBigIntNode(V_ASN1_VISIBLESTRING));
+   ASN1_NS.addConstant("V_ASN1_GENERALSTRING",     new QoreBigIntNode(V_ASN1_GENERALSTRING));
+   ASN1_NS.addConstant("V_ASN1_UNIVERSALSTRING",   new QoreBigIntNode(V_ASN1_UNIVERSALSTRING));
+   ASN1_NS.addConstant("V_ASN1_BMPSTRING",         new QoreBigIntNode(V_ASN1_BMPSTRING));
+   ASN1_NS.addConstant("V_ASN1_BOOLEAN",           new QoreBigIntNode(V_ASN1_BOOLEAN));
+   ASN1_NS.addConstant("V_ASN1_INTEGER",           new QoreBigIntNode(V_ASN1_INTEGER));
+   ASN1_NS.addConstant("V_ASN1_NULL",              new QoreBigIntNode(V_ASN1_NULL));
+   ASN1_NS.addConstant("V_ASN1_OBJECT_DESCRIPTOR", new QoreBigIntNode(V_ASN1_OBJECT_DESCRIPTOR));
+   ASN1_NS.addConstant("V_ASN1_EXTERNAL",          new QoreBigIntNode(V_ASN1_EXTERNAL));
+   ASN1_NS.addConstant("V_ASN1_REAL",              new QoreBigIntNode(V_ASN1_REAL));
+   ASN1_NS.addConstant("V_ASN1_ENUMERATED",        new QoreBigIntNode(V_ASN1_ENUMERATED));
+   ASN1_NS.addConstant("V_ASN1_SET",               new QoreBigIntNode(V_ASN1_SET));
+   ASN1_NS.addConstant("V_ASN1_UTCTIME",           new QoreBigIntNode(V_ASN1_UTCTIME));
+   ASN1_NS.addConstant("V_ASN1_GENERALIZEDTIME",   new QoreBigIntNode(V_ASN1_GENERALIZEDTIME));
 
    return 0;
 }

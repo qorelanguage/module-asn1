@@ -38,7 +38,13 @@ static void ASN1SEQUENCE_constructor(QoreObject *self, const QoreListNode *param
 
 static void ASN1SEQUENCE_copy(QoreObject *self, QoreObject *old, QoreAsn1Sequence *seq, ExceptionSink *xsink)
 {
-   xsink->raiseException("ASN1SEQUENCE-COPY-ERROR", "ASN1Sequence objects cannot be copied");
+   QoreAsn1Sequence *nseq = (QoreAsn1Sequence *)seq->copy();
+   if (!nseq) {
+      xsink->raiseException("ASN1SEQUENCE-COPY-ERROR", "failure copying ASN1Sequence object");
+      return;
+   }
+
+   self->setPrivate(CID_ASN1SEQUENCE, nseq);
 }
 
 static AbstractQoreNode *ASN1SEQUENCE_add(QoreObject *self, QoreAsn1Sequence *seq, const QoreListNode *params, ExceptionSink *xsink)
