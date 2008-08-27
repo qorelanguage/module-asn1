@@ -1,6 +1,6 @@
 
 
-ASN1_SOURCES = asn1.cc QC_ASN1Sequence.cc QC_ASN1Integer.cc QC_ASN1ObjectIdentifier.cc QC_ASN1Boolean.cc QC_ASN1String.cc
+ASN1_SOURCES = asn1.cc QC_ASN1Sequence.cc QC_ASN1Integer.cc QC_ASN1ObjectIdentifier.cc QC_ASN1Boolean.cc QC_ASN1String.cc QC_ASN1OctetString.cc QC_ASN1UTF8String.cc
 
 lib_LTLIBRARIES = asn1.la
 asn1_la_SOURCES = $(ASN1_SOURCES)

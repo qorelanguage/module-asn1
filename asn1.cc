@@ -72,11 +72,26 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
       long e = ERR_get_error();
       char buf[121];
       ERR_error_string(e, buf);
-      xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 string (0x%x) data: %s", type, buf);
+      xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "failed to parse ASN1 string (0x%x) data: %s", *p, buf);
       return 0;
    }
-   qc = QC_ASN1STRING;
-   return new QoreAsn1String(str);
+
+   int str_type = ASN1_STRING_type(str);
+   switch (str_type) {
+      case V_ASN1_OCTET_STRING:
+	 qc = QC_ASN1OCTETSTRING;
+	 return new QoreAsn1OctetString(str);
+	 break;
+
+      case V_ASN1_UTF8STRING:
+	 qc = QC_ASN1UTF8STRING;
+	 return new QoreAsn1UTF8String(str);
+	 break;
+   }
+
+   ASN1_STRING_free(str);
+   xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "unsupported ASN1 string type 0x%x", str_type);
+   return 0;
 }
 
 static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
@@ -225,6 +240,8 @@ QoreStringNode *asn1_module_init()
    ASN1_NS.addSystemClass(initASN1ObjectIdentifierClass(QC_ASN1OBJECT));
    ASN1_NS.addSystemClass(initASN1BooleanClass(QC_ASN1OBJECT));
    ASN1_NS.addSystemClass(initASN1StringClass(QC_ASN1OBJECT));
+   ASN1_NS.addSystemClass(initASN1OctetStringClass(QC_ASN1STRING));
+   ASN1_NS.addSystemClass(initASN1UTF8StringClass(QC_ASN1STRING));
 
    // add constants
    ASN1_NS.addConstant("ModuleVersion",           new QoreStringNode(QORE_ASN1_VERSION));

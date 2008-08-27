@@ -143,7 +143,7 @@ class asn1_test::asn1_test {
 	my $seq = new ASN1Sequence();
 
 	$seq.add(asn1_test::get_algorithm_identifier());
-	$seq.add(new ASN1String($hash, V_ASN1_OCTET_STRING));
+	$seq.add(new ASN1OctetString($hash));
 
 	return $seq;
     }

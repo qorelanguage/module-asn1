@@ -33,6 +33,8 @@
 #include "QC_ASN1ObjectIdentifier.h"
 #include "QC_ASN1Boolean.h"
 #include "QC_ASN1String.h"
+#include "QC_ASN1OctetString.h"
+#include "QC_ASN1UTF8String.h"
 
 DLLLOCAL extern qore_classid_t CID_ASN1OBJECT;
 

@@ -40,29 +40,20 @@ class QoreAsn1String : public AbstractQoreAsn1Object
       }
 
    public:
-      DLLLOCAL QoreAsn1String(const QoreString *content, int type = V_ASN1_UTF8STRING)
+      DLLLOCAL QoreAsn1String(const void *ptr, int len, int type)
       {
-	 //printd(5, "QoreAsn1String::QoreAsn1String() this=%08p type=%d len=%d str='%s'\n", this, type, content->strlen(), content->getBuffer());
+	 //printd(5, "QoreAsn1String::QoreAsn1String() this=%08p type=%d len=%d ptr=%08p\n", this, type, len, ptr);
+
 	 str = ASN1_STRING_type_new(type);
 	 if (!str)
 	    return;
-	 
-	 ASN1_STRING_set(str, content->getBuffer(), content->strlen());
+
+	 ASN1_STRING_set(str, ptr, len);
       }
 
       // takes over ownership of n_str
       DLLLOCAL QoreAsn1String(ASN1_STRING *n_str) : str(n_str) {}
 
-      DLLLOCAL QoreAsn1String(const BinaryNode *b, int type = V_ASN1_OCTET_STRING)
-      {
-	 //printd(5, "QoreAsn1String::QoreAsn1String() this=%08p type=%d len=%d ptr=%08p\n", this, type, b->size(), b->getPtr());
-
-	 str = ASN1_STRING_type_new(type);
-	 if (!str)
-	    return;
-
-	 ASN1_STRING_set(str, b->getPtr(), b->size());
-      }
       DLLLOCAL virtual AbstractQoreAsn1Object *copy() const {
 	 return new QoreAsn1String(ASN1_STRING_dup(str));
       }
@@ -84,6 +75,9 @@ class QoreAsn1String : public AbstractQoreAsn1Object
       }
 
       DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
+	 assert(false);
+	 return 0;
+/*
 	 SimpleRefHolder<BinaryNode> b(getDerData());
 	 const unsigned char *p = ((const unsigned char *)b->getPtr()) + 1;
 	 decodeLen(p);
@@ -103,9 +97,8 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	 //printd(5, "getQoreData() new binarynode len=%d\n", b->size() - hlen);
 	 rv->append(p, b->size() - hlen);
 	 return rv;
+*/
       }
-
-      //DLLLOCAL bool value() const { }
 };
 
 #endif
