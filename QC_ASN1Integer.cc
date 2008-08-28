@@ -29,17 +29,32 @@ static void ASN1INTEGER_constructor(QoreObject *self, const QoreListNode *params
 {
    const AbstractQoreNode *p = get_param(params, 0);
 
-   SimpleRefHolder<QoreAsn1Integer> i(new QoreAsn1Integer(p ? p->getAsBigInt() : 0));
+   QoreAsn1Integer *i = 0;
+
+   qore_type_t t = p ? p->getType() : NT_NOTHING;
+   if (t == NT_STRING) {
+      const QoreStringNode *str = reinterpret_cast<const QoreStringNode *>(p);
+      i = new QoreAsn1Integer(str);
+   }
+   else
+      i = new QoreAsn1Integer(p ? p->getAsBigInt() : 0);
+
    if (!i) {
-      xsink->raiseException("ASN1INTEGER-COSNTRUCTOR-ERROR", "failure to create ASN1Integer object");      
+      xsink->raiseException("ASN1INTEGER-CONSTRUCTOR-ERROR", "failure to create ASN1Integer object");      
       return;
    }
-   self->setPrivate(CID_ASN1INTEGER, i.release());
+   self->setPrivate(CID_ASN1INTEGER, i);
 }
 
-static void ASN1INTEGER_copy(QoreObject *self, QoreObject *old, QoreAsn1Integer *seq, ExceptionSink *xsink)
+static void ASN1INTEGER_copy(QoreObject *self, QoreObject *old, QoreAsn1Integer *i, ExceptionSink *xsink)
 {
-   xsink->raiseException("ASN1INTEGER-COPY-ERROR", "ASN1Integer objects cannot be copied");
+   QoreAsn1Integer *ni = (QoreAsn1Integer *)i->copy();
+   if (!ni) {
+      xsink->raiseException("ASN1INTEGER-COPY-ERROR", "failure copying ASN1Integer object");
+      return;
+   }
+
+   self->setPrivate(CID_ASN1INTEGER, ni);   
 }
 
 QoreClass *initASN1IntegerClass(QoreClass *parent)

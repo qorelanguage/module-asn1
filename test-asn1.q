@@ -88,6 +88,13 @@ class asn1_test::asn1_test {
 
 	    $.test_value($bs.getBitString(), "0110100001101001", "ASN1BitSTring::getBitString()");
 
+	    my $oid = new ASN1ObjectIdentifier(64);
+	    $.test_value($oid.getNumericalForm(), "1.3.14.3.2.26", "first ASN1ObjectIdentifier::getNumericalForm()");
+	    $.test_value($oid.getName(), "sha1", "ASN1ObjectIdentifier::getName()");
+
+	    $oid = new ASN1ObjectIdentifier("des-ede");
+	    $.test_value($oid.getNumericalForm(), "1.3.14.3.2.17", "second ASN1ObjectIdentifier::getNumericalForm()");
+
             $.ip += 1;
 	}
     }

@@ -506,7 +506,7 @@ Also see AdvancedOptions</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="ASN1 Namespace" modifier="DavidNichols" created="200808200739" modified="200808281111" changecount="55">
+<div title="ASN1 Namespace" modifier="DavidNichols" created="200808200739" modified="200808281341" changecount="61">
 <pre>The module implements the {{{ASN1}}} namespace that contains all constants and classes defined by the module.
 !Classes
 * [[ASN1Object]]: abstract base class for all ASN.1 data types, also contains static methods
@@ -517,25 +517,84 @@ Also see AdvancedOptions</pre>
 * [[ASN1UTF8String]]: an ASN.1 {{{UTF-8}}} character string data type class
 * [[ASN1ObjectIdentifier]]: an ASN.1 {{{ObjectIdentifier}}} data type class
 * [[ASN1BitString]]: an ASN.1 {{{BitString}}} data type class
-
 !Constants
 A single generic constant is defined in the module:
 : {{{ASN1::ModuleVersion}}}: the version string for this module (&quot;0.1&quot;)
-
 The following three groups of constants are provided to serve as options to methods in the module:
-* [[ASN1Tag Constants]]
-</pre>
+* [[ASN1Tag Constants]]</pre>
 </div>
-<div title="ASN1Boolean" modifier="DavidNichols" created="200808281110" modified="200808281111" changecount="5">
+<div title="ASN1BitString" modifier="DavidNichols" created="200808281402" modified="200808281421" changecount="31">
+<pre>{{{ASN1BitString}}} is a subclass of [[ASN1Object]] representing an ASN.1 {{{BitString}}} value; that is, a string of binary digits.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1BitString::constructor()]]|creates an {{{ASN1BitString}}} object from a Qore list or binary object.|
+|[[ASN1BitString::copy()]]|returns a copy of the object|
+|[[ASN1BitString::getBinary()]]|returns a Qore binary object corresponding to the bits in the ASN.1 {{{BitString}}}|
+|[[ASN1BitString::getBitString()]]|returns a Qore string where each character corresponds to a bits in the ASN.1 {{{BitString}}}|
+|[[ASN1BitString::getQoreData()]]|returns a Qore list of boolean elements corresponding to the bits in the ASN.1 {{{BitString}}}|</pre>
+</div>
+<div title="ASN1BitString::constructor()" modifier="DavidNichols" created="200808281418" changecount="31">
+<pre>!Synopsis
+Creates an ASN1BitString object from the list or binary object passed.  A list will be processed in such a way that each element in the list will be converted to a boolean value, if the value is {{{True}}}, then the corresponding bit in the {{{BitString}}} will be true, if the element is {{{False}}}, then the corresponding bit in the {{{BitString}}} will be false.  If the argument to the constructor is a binary object, then the bytes of the object will be used to set the bits of the {{{BitString}}} directly.
+!Usage
+!!!{{{new ASN1BitString(value)}}}
+* example: {{{ my $bit_string = new ASN1BitString((True, False, True, True)); }}}
+!Exceptions
+* {{{ASN1OBJECTIDENTIFIER-CONSTUCTOR-ERROR}}}: error in method arguments, internal error in openssl library creating the object data</pre>
+</div>
+<div title="ASN1BitString::copy()" modifier="DavidNichols" created="200808281418" changecount="31">
+<pre>!Synopsis
+Copies the ASN1BitString object.
+!Usage
+!!!{{{ASN1BitString::copy()}}}
+** example: {{{ my $new_bit_string = $old_bit_string.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1BitString::getBinary()" modifier="DavidNichols" created="200808281423" modified="200808281423" changecount="31">
+<pre>!Synopsis
+Returns a Qore binary object corresponding to value of the ASN.1 {{{BitString}}}.
+!Usage
+!!!{{{ASN1BitString::getBinary()}}}
+** example: {{{ my $bin = $bit_string.getBinary();}}}
+!Return Value
+Qore binary object.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1BitString::getBitString()" modifier="DavidNichols" created="200808281424" changecount="31">
+<pre>!Synopsis
+Returns a Qore string where each character is either an ASCII &quot;0&quot; or &quot;1&quot; corresponding to a bit in the ASN.1 {{{BitString}}}.
+!Usage
+!!!{{{ASN1BitString::getBitString()}}}
+** example: {{{ my $str = $bit_string.getBitString();}}}
+!Return Value
+Qore string.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1BitString::getQoreData()" modifier="DavidNichols" created="200808281420" modified="200808281421" changecount="31">
+<pre>!Synopsis
+Returns a Qore list where each element is a {{{boolean}}} value corresponding to value of the ASN.1 {{{BitString}}} bit at that position.
+!Usage
+!!!{{{ASN1BitString::getQoreData()}}}
+** example: {{{ my $list = $bit_string.getQoreData();}}}
+!Return Value
+Qore list.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1Boolean" modifier="DavidNichols" created="200808281110" modified="200808281154" changecount="31">
 <pre>{{{ASN1Boolean}}} is a subclass of [[ASN1Object]] representing an ASN.1 boolean value.
 
 ''Methods''
 |!Method Name|!Description|h
 |[[ASN1Boolean::constructor()]]|creates an {{{ASN1Boolean}}} object.|
 |[[ASN1Boolean::copy()]]|returns a copy of the object|
-</pre>
+|[[ASN1Boolean::getQoreData()]]|returns a Qore boolean value corresponding to the ASN.1 boolean value|</pre>
 </div>
-<div title="ASN1Boolean::constructor()" modifier="DavidNichols" created="200808281112" changecount="5">
+<div title="ASN1Boolean::constructor()" modifier="DavidNichols" created="200808281112" modified="200808281236" changecount="31">
 <pre>!Synopsis
 Creates an ASN1Boolean object; if the first argument evaluates to {{{True}}}, then the value of the object is true, otherwise it is false.
 !Usage
@@ -545,7 +604,7 @@ Creates an ASN1Boolean object; if the first argument evaluates to {{{True}}}, th
 This method does not throw any exceptions.
 </pre>
 </div>
-<div title="ASN1Boolean::copy()" modifier="DavidNichols" created="200808281134" changecount="5">
+<div title="ASN1Boolean::copy()" modifier="DavidNichols" created="200808281134" changecount="31">
 <pre>!Synopsis
 Returns a deep copy of the ASN1Boolean object.
 !Usage
@@ -553,6 +612,56 @@ Returns a deep copy of the ASN1Boolean object.
 ** example: {{{ my $new_bool = $old_bool.copy(); }}}
 !Exceptions
 This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1Boolean::getQoreData()" modifier="DavidNichols" created="200808281210" modified="200808281211" changecount="31">
+<pre>!Synopsis
+Returns a Qore boolean value corresponding to the ASN.1 boolean value.
+!Usage
+!!!{{{ASN1Boolean::getQoreData()}}}
+** example: {{{ my $b = $bool.getQoreData();}}}
+!Return Value
+Qore boolean value.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1Integer" modifier="DavidNichols" created="200808281154" modified="200808281230" changecount="31">
+<pre>{{{ASN1Integer}}} is a subclass of [[ASN1Object]] representing an ASN.1 integer value.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1Integer::constructor()]]|creates an {{{ASN1Integer}}} object.|
+|[[ASN1Integer::copy()]]|returns a copy of the object|
+|[[ASN1Integer::getQoreData()]]|returns a Qore string corresponding to the ASN.1 integer|</pre>
+</div>
+<div title="ASN1Integer::constructor()" modifier="DavidNichols" created="200808281228" modified="200808281228" changecount="31">
+<pre>!Synopsis
+Creates an ASN1Integer object from the integer or string argument passed.
+!Usage
+!!!{{{new ASN1Integer(value)}}}
+** example: {{{ my $i = new ASN1Integer(250); }}}
+!Exceptions
+:{{{ASN1INTEGER-CONSTRUCTOR-ERROR}}}: the openssl library encountered an error creating the internal object
+</pre>
+</div>
+<div title="ASN1Integer::copy()" modifier="DavidNichols" created="200808281229" modified="200808281239" changecount="31">
+<pre>!Synopsis
+Copies the ASN1Integer object.
+!Usage
+!!!{{{ASN1Integer::copy()}}}
+** example: {{{ my $new_int = $old_int.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1Integer::getQoreData()" modifier="DavidNichols" created="200808281212" modified="200808281240" changecount="31">
+<pre>!Synopsis
+Returns a Qore string corresponding to the ASN.1 integer value.  A string is returned instead of a Qore integer because an ASN.1 integer can be arbitrarily long, while Qore integers are limited to 64 bits.
+!Usage
+!!!{{{ASN1Integer::getQoreData()}}}
+** example: {{{ my $i = $int.getQoreData();}}}
+!Return Value
+Qore string value.
+!Exceptions
+This method does not throw any exceptions</pre>
 </div>
 <div title="ASN1Object" modifier="DavidNichols" created="200808200732" modified="200808281109" changecount="39">
 <pre>The {{{ASN1Object}}} class is the abstract base class for all Qore ASN.1 data type classes and provides a static method for parsing {{{DER}}}-encoded ASN.1 data.  As this is an abstract class, it cannot be instantiated directly; a subclass must be instantiated instead.
@@ -590,7 +699,7 @@ Qore data corresponding roughly to the ASN.1 data represented by the current obj
 !Exceptions
 This function does not throw any exceptions.</pre>
 </div>
-<div title="ASN1Object::parse()" modifier="DavidNichols" created="200808271526" modified="200808271557" changecount="10">
+<div title="ASN1Object::parse()" modifier="DavidNichols" created="200808271526" modified="200808281225" changecount="11">
 <pre>!Synopsis
 Static method of the [[ASN1Object]] class.  Parses {{{DER}}}-encoded data and returns a subclass of [[ASN1Object]].  Note that if this method encounters an unsupported ASN.1 type, it will throw an {{{ASN1OBJECT-PARSE-ERROR}}} exception.
 !Usage
@@ -602,7 +711,111 @@ Returns a subclass of [[ASN1Object]].
 !Exceptions
 :{{{ASN1OBJECT-PARSE-ERROR}}}: error decoding DER data, unsupported ASN.1 type encountered</pre>
 </div>
-<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" modified="200808281110" changecount="15">
+<div title="ASN1ObjectIdentifier" modifier="DavidNichols" created="200808281339" modified="200808281341" changecount="31">
+<pre>{{{ASN1ObjectIdentifier}}} is a subclass of [[ASN1Object]] representing an ASN.1 {{{ObjectIdentifier}}} value.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1ObjectIdentifier::constructor()]]|creates an {{{ASN1ObjectIdentifier}}} object.|
+|[[ASN1ObjectIdentifier::copy()]]|returns a copy of the object|
+|[[ASN1ObjectIdentifier::getName()]]|returns a Qore string corresponding to the ASN.1 {{{ObjectIdentifier}}}|
+|[[ASN1ObjectIdentifier::getNumericalForm()]]|returns a Qore string giving the dotted numerical form corresponding to the ASN.1 {{{ObjectIdentifier}}}|
+|[[ASN1ObjectIdentifier::getQoreData()]]|equivalent to ASN1ObjectIdentifier::getName()|</pre>
+</div>
+<div title="ASN1ObjectIdentifier::constructor()" modifier="DavidNichols" created="200808281357" modified="200808281403" changecount="31">
+<pre>!Synopsis
+Creates an ASN1ObjectIdentifier object from the string or integer passed.
+!Usage
+!!!{{{new ASN1ObjectIdentifier(value)}}}
+The following examples are all equivalent:
+* example: {{{ my $oid = new ASN1ObjectIdentifier(&quot;1.3.14.3.2.26&quot;); }}}
+* example: {{{ my $oid = new ASN1ObjectIdentifier(&quot;sha1&quot;); }}}
+* example: {{{ my $oid = new ASN1ObjectIdentifier(64); }}}
+!Exceptions
+* {{{ASN1OBJECTIDENTIFIER-CONSTUCTOR-ERROR}}}: internal error in openssl library creating the object data</pre>
+</div>
+<div title="ASN1ObjectIdentifier::copy()" modifier="DavidNichols" created="200808281357" modified="200808281418" changecount="31">
+<pre>!Synopsis
+Copies the ASN1ObjectIdentifier object.
+!Usage
+!!!{{{ASN1ObjectIdentifier::copy()}}}
+** example: {{{ my $new_oid = $old_oid.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1ObjectIdentifier::getName()" modifier="DavidNichols" created="200808281359" modified="200808281400" changecount="31">
+<pre>!Synopsis
+Returns a Qore string corresponding to the ASN.1 {{{ObjectIdentifier}}} value.
+!Usage
+!!!{{{ASN1ObjectIdentifier::getName()}}}
+** example: {{{ my $name = $oid.getName();}}}
+!Return Value
+Qore string value.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1ObjectIdentifier::getNumericalForm()" modifier="DavidNichols" created="200808281400" changecount="31">
+<pre>!Synopsis
+Returns a Qore string corresponding to the ASN.1 {{{ObjectIdentifier}}} dotted numerical form (ex: &quot;1.3.14.3.2.26&quot; for &quot;sha1&quot;).
+!Usage
+!!!{{{ASN1ObjectIdentifier::getNumericalForm()}}}
+** example: {{{ my $id = $oid.getNumericalForm();}}}
+!Return Value
+Qore string value.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1ObjectIdentifier::getQoreData()" modifier="DavidNichols" created="200808281401" modified="200808281418" changecount="31">
+<pre>!Synopsis
+Returns a Qore string corresponding to the ASN.1 {{{ObjectIdentifier}}} value; this method is equivalent to [[ASN1ObjectIdentifier::getName()]].
+!Usage
+!!!{{{ASN1ObjectIdentifier::getQoreData()}}}
+** example: {{{ my $name = $oid.getQoreData();}}}
+!Return Value
+Qore string value.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1OctetString" modifier="DavidNichols" created="200808281231" modified="200808281242" changecount="31">
+<pre>{{{ASN1OctetString}}} is a subclass of [[ASN1Object]] representing an ASN.1 {{{OctetString}}} value; that is, a sequence of bytes.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1OctetString::constructor()]]|creates an {{{ASN1OctetString}}} object from a Qore binary object.|
+|[[ASN1OctetString::copy()]]|returns a copy of the object|
+|[[ASN1OctetString::getQoreData()]]|returns a Qore binary object corresponding to the ASN.1 {{{OctetString}}}|</pre>
+</div>
+<div title="ASN1OctetString::constructor()" modifier="DavidNichols" created="200808281239" modified="200808281251" changecount="31">
+<pre>!Synopsis
+Creates an ASN1OctetString object from the binary object or string passed.
+!Usage
+!!!{{{new ASN1OctetString(value)}}}
+** example: {{{ my $octet_string = new ASN1OctetString($binary); }}}
+!Exceptions
+:{{{ASN1OCTETSTRING-CONSTUCTOR-ERROR}}}: incorrect arguments to method, internal error in openssl library creating the object data
+</pre>
+</div>
+<div title="ASN1OctetString::copy()" modifier="DavidNichols" created="200808281239" modified="200808281313" changecount="31">
+<pre>!Synopsis
+Copies the ASN1OctetString object.
+!Usage
+!!!{{{ASN1OctetString::copy()}}}
+** example: {{{ my $new_octet_string = $old_octet_string.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1OctetString::getQoreData()" modifier="DavidNichols" created="200808281240" modified="200808281314" changecount="31">
+<pre>!Synopsis
+Returns a Qore binary object corresponding to the ASN.1 {{{OctetString}}} value.
+!Usage
+!!!{{{ASN1OctetString::getQoreData()}}}
+** example: {{{ my $bin = $octet_string.getQoreData();}}}
+!Return Value
+Qore binary value.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" modified="200808281155" changecount="16">
 <pre>{{{ASN1Sequence}}} is a subclass of [[ASN1Object]] representing an ASN.1 Sequence.
 
 ''Methods''
@@ -611,7 +824,8 @@ Returns a subclass of [[ASN1Object]].
 |[[ASN1Sequence::copy()]]|returns a copy of the object|
 |[[ASN1Sequence::add()]]|adds an ASN1Object (subclass) to the end of the Sequence|
 |[[ASN1Sequence::get()]]|retrieves the ASN1Object (subclass) at the element location passed as an argument|
-|[[ASN1Sequence::size()]]|returns the number of elements in the Sequence|</pre>
+|[[ASN1Sequence::size()]]|returns the number of elements in the Sequence|
+|[[ASN1Sequence::getQoreData()]]|returns a Qore list corresponding to contents of the ASN.1 Sequence|</pre>
 </div>
 <div title="ASN1Sequence::add()" modifier="DavidNichols" created="200808271554" modified="200808280846" changecount="13">
 <pre>!Synopsis
@@ -642,7 +856,7 @@ Returns a deep copy of the ASN1Sequence object.
 !Exceptions
 This method does not throw any exceptions.</pre>
 </div>
-<div title="ASN1Sequence::get()" modifier="DavidNichols" created="200808280848" modified="200808280848" changecount="5">
+<div title="ASN1Sequence::get()" modifier="DavidNichols" created="200808280848" modified="200808281156" changecount="31">
 <pre>!Synopsis
 Retrieves the ASN1Object subclass at the location given as the sole argument to the method.  If the element location is not valid (negative or greater than the number of elements in the Sequence) then {{{NOTHING}}} is returned.  Note that the first element in the sequence is element 0.
 !Usage
@@ -653,7 +867,18 @@ Returns an ASN1Object subclass or NOTHING
 !Exceptions
 This method does not throw any exceptions</pre>
 </div>
-<div title="ASN1Sequence::size()" modifier="DavidNichols" created="200808280832" changecount="5">
+<div title="ASN1Sequence::getQoreData()" modifier="DavidNichols" created="200808281209" modified="200808281209" changecount="31">
+<pre>!Synopsis
+Returns a Qore list where each element is the result of calling ASN1Object::getQoreData() on the elements of the Sequence.
+!Usage
+!!!{{{ASN1Sequence::getQoreData()}}}
+** example: {{{ my $list = $seq.getQoreData();}}}
+!Return Value
+Returns a list of Qore values corresponding to the ASN1Object elements in the Sequence.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1Sequence::size()" modifier="DavidNichols" created="200808280832" changecount="31">
 <pre>!Synopsis
 Returns the number of elements in the sequence.
 !Usage
@@ -693,6 +918,46 @@ This method does not throw any exceptions.</pre>
 * {{{ASN1::V_ASN1_UTCTIME}}}
 * {{{ASN1::V_ASN1_GENERALIZEDTIME}}}</pre>
 </div>
+<div title="ASN1UTF8String" modifier="DavidNichols" created="200808281242" modified="200808281402" changecount="31">
+<pre>{{{ASN1UTF8String}}} is a subclass of [[ASN1Object]] representing an ASN.1 {{{UTF8String}}} value; that is, a string in {{{UTF-8}}} encoding.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1UTF8String::constructor()]]|creates an {{{ASN1UTF8String}}} object from a Qore string object.|
+|[[ASN1UTF8String::copy()]]|returns a copy of the object|
+|[[ASN1UTF8String::getQoreData()]]|returns a Qore string corresponding to the ASN.1 {{{UTF8String}}}|</pre>
+</div>
+<div title="ASN1UTF8String::constructor()" modifier="DavidNichols" created="200808281312" modified="200808281341" changecount="31">
+<pre>!Synopsis
+Creates an ASN1UTF8String object from the string passed.
+!Usage
+!!!{{{new ASN1UTF8String(string)}}}
+** example: {{{ my $str = new ASN1UTF8String(&quot;hi there&quot;); }}}
+!Exceptions
+* {{{ASN1UTF8STRING-CONSTUCTOR-ERROR}}}: incorrect arguments to method, internal error in openssl library creating the object data
+* {{{ENCODING-CONVERSION-ERROR}}}: this exception is thrown if the string argument to the constructor must be converted to {{{UTF-8}}} encoding, but an error occurs in the encoding translation.
+</pre>
+</div>
+<div title="ASN1UTF8String::copy()" modifier="DavidNichols" created="200808281313" modified="200808281357" changecount="31">
+<pre>!Synopsis
+Copies the ASN1UTF8String object.
+!Usage
+!!!{{{ASN1UTF8String::copy()}}}
+** example: {{{ my $new_str = $old_str.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1UTF8String::getQoreData()" modifier="DavidNichols" created="200808281315" modified="200808281358" changecount="31">
+<pre>!Synopsis
+Returns a Qore string corresponding to the ASN.1 {{{UTF8String}}} value.
+!Usage
+!!!{{{ASN1UTF8String::getQoreData()}}}
+** example: {{{ my $str = $str.getQoreData();}}}
+!Return Value
+Qore string value with {{{UTF-8}}} encoding.
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
 <div title="DavidNichols" modifier="DavidNichols" created="200808201022" modified="200808271442" changecount="5">
 <pre>David Nichols is the author of the [[Qore programming language|http://qoretechnologies.com/qore]] and of this ans1 module.
 You can reach me at: mailto:david_nichols@users.sourceforge.net</pre>
@@ -702,14 +967,14 @@ You can reach me at: mailto:david_nichols@users.sourceforge.net</pre>
 [[ASN1 Namespace]]
 </pre>
 </div>
-<div title="Introduction" modifier="DavidNichols" created="200808200719" modified="200808281108" changecount="38">
-<pre>The Qore {{{asn1}}} module is based on the [[ASN.1|http://en.wikipedia.org/wiki/ASN.1]] functionality provided by the [[openssl library|http://www.openssl.org]].  The module allows for ASN.1 data structures to be dynamically created and parsed, and converted to concrete output formats (like DER).
+<div title="Introduction" modifier="DavidNichols" created="200808200719" modified="200808281230" changecount="39">
+<pre>The Qore {{{asn1}}} module is based on the [[ASN.1|http://en.wikipedia.org/wiki/ASN.1]] functionality provided by the [[openssl library|http://www.openssl.org]].  The module allows for ASN.1 data structures to be dynamically created, parsed, and converted to concrete output formats (like DER).
 
 Note that this documentation is based on [[TittldyWiki|http://www.tiddlywiki.com/]], a wiki entirely contained in a single web page.
 
 This module is stable and tested, but currently only provides limited functionality; future versions of this module should provide more functionality.</pre>
 </div>
-<div title="MainMenu" modifier="DavidNichols" created="200808200730" modified="200808271441" changecount="27">
+<div title="MainMenu" modifier="DavidNichols" created="200808200730" modified="200808281419" changecount="28">
 <pre>[[Introduction]]
 [[ASN1 Namespace]]
 [[ASN1Object]]
@@ -719,26 +984,13 @@ This module is stable and tested, but currently only provides limited functional
 [[ASN1OctetString]]
 [[ASN1UTF8String]]
 [[ASN1ObjectIdentifier]]
-</pre>
+[[ASN1BitString]]</pre>
 </div>
 <div title="SiteSubtitle" modifier="YourName" created="200808200718" changecount="25">
 <pre></pre>
 </div>
 <div title="SiteTitle" modifier="DavidNichols" created="200808200717" modified="200808271434" changecount="27">
 <pre>Qore asn1 Module Documentation</pre>
-</div>
-<div title="XmlSec::verify()" modifier="DavidNichols" created="200808201003" modified="200808271523" changecount="12">
-<pre>!Synopsis
-Static method of the [[XmlSec Class]].  Verifies a signed XML string with an [[XmlSecKey|XmlSecKey Class]] object.  If errors occur an appropriate exception is raised.
-!Usage
-!!!{{{XmlSec::verify(signed_xml_string, }}}[[xmlSecKey|xmlSecKey Class]]{{{)}}}
-Verifies the signature of the signed XML string passed as the first argument with the the [[]XmlSecKey|XmlSecKey Class]] passed as the second argument.
-** example: {{{ XmlSec::verify($str, $key); }}}
-!Return Value
-This method returns no value; if an error occurs an exception is raised.
-!Exceptions
-:{{{XMLSEC-SIGN-ERROR}}}: error in arguments to the methods; signature verification failed
-:{{{XMLSEC-DSIGCTX-ERROR}}}: signature verification could not be processed by libxmlsec</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->

@@ -79,11 +79,6 @@ class QoreAsn1BitString : public QoreAsn1String
 	 //printd(5, "ASN1BitString::getBinary() new binarynode len=%d (last=0x%x)\n", b->size() - hlen, ((char *)b->getPtr())[b->size() - hlen]);
 	 rv->append(p, b->size() - hlen);
 
-	 for (int i = 0, e = b->size() - hlen; i < e; ++i) {
-	    char c = ((char *)rv->getPtr())[i];
-	    //printd(5, "getBinary() %d/%d: %03d (%c)\n", i, e, c, c);
-	 }
-
 	 return rv;
       }
 

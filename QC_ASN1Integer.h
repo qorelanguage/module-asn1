@@ -38,16 +38,24 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
 	    ASN1_STRING_free(i);
       }
 
-   public:
-      DLLLOCAL QoreAsn1Integer(int64 v) {
-	 QoreString str;
-	 str.sprintf("%lld", v);
+      DLLLOCAL void set_integer(const QoreString *str) {
 	 BIGNUM *bn = 0;
-	 if (!BN_dec2bn(&bn, str.getBuffer()))
+	 if (!BN_dec2bn(&bn, str->getBuffer()))
 	    return;
 
 	 i = BN_to_ASN1_INTEGER(bn, 0);
 	 BN_free(bn);
+      }
+
+   public:
+      DLLLOCAL QoreAsn1Integer(const QoreString *str) : i(0) {
+	 set_integer(str);
+      }
+
+      DLLLOCAL QoreAsn1Integer(int64 v) : i(0) {
+	 QoreString str;
+	 str.sprintf("%lld", v);
+	 set_integer(&str);
       }
 
       // takes over ownership of n_i
