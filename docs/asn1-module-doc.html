@@ -506,7 +506,7 @@ Also see AdvancedOptions</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="ASN1 Namespace" modifier="DavidNichols" created="200808200739" modified="200808271523" changecount="53">
+<div title="ASN1 Namespace" modifier="DavidNichols" created="200808200739" modified="200808281111" changecount="55">
 <pre>The module implements the {{{ASN1}}} namespace that contains all constants and classes defined by the module.
 !Classes
 * [[ASN1Object]]: abstract base class for all ASN.1 data types, also contains static methods
@@ -515,7 +515,8 @@ Also see AdvancedOptions</pre>
 * [[ASN1Integer]]: an ASN.1 integer data type class
 * [[ASN1OctetString]]: an ASN.1 {{{OctetString}}} (binary) data type class
 * [[ASN1UTF8String]]: an ASN.1 {{{UTF-8}}} character string data type class
-* [[ASN1ObjectIdentifier]]: an ASN.1 Object Identifier data type class
+* [[ASN1ObjectIdentifier]]: an ASN.1 {{{ObjectIdentifier}}} data type class
+* [[ASN1BitString]]: an ASN.1 {{{BitString}}} data type class
 
 !Constants
 A single generic constant is defined in the module:
@@ -525,13 +526,41 @@ The following three groups of constants are provided to serve as options to meth
 * [[ASN1Tag Constants]]
 </pre>
 </div>
-<div title="ASN1Object" modifier="DavidNichols" created="200808200732" modified="200808271546" changecount="38">
+<div title="ASN1Boolean" modifier="DavidNichols" created="200808281110" modified="200808281111" changecount="5">
+<pre>{{{ASN1Boolean}}} is a subclass of [[ASN1Object]] representing an ASN.1 boolean value.
+
+''Methods''
+|!Method Name|!Description|h
+|[[ASN1Boolean::constructor()]]|creates an {{{ASN1Boolean}}} object.|
+|[[ASN1Boolean::copy()]]|returns a copy of the object|
+</pre>
+</div>
+<div title="ASN1Boolean::constructor()" modifier="DavidNichols" created="200808281112" changecount="5">
+<pre>!Synopsis
+Creates an ASN1Boolean object; if the first argument evaluates to {{{True}}}, then the value of the object is true, otherwise it is false.
+!Usage
+!!!{{{new ASN1Boolean(bool_value)}}}
+** example: {{{ my $bool = new ASN1Boolean(False); }}}
+!Exceptions
+This method does not throw any exceptions.
+</pre>
+</div>
+<div title="ASN1Boolean::copy()" modifier="DavidNichols" created="200808281134" changecount="5">
+<pre>!Synopsis
+Returns a deep copy of the ASN1Boolean object.
+!Usage
+!!!{{{ASN1Boolean::copy()}}}
+** example: {{{ my $new_bool = $old_bool.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1Object" modifier="DavidNichols" created="200808200732" modified="200808281109" changecount="39">
 <pre>The {{{ASN1Object}}} class is the abstract base class for all Qore ASN.1 data type classes and provides a static method for parsing {{{DER}}}-encoded ASN.1 data.  As this is an abstract class, it cannot be instantiated directly; a subclass must be instantiated instead.
 
 ''Methods''
 |!Method Name|!Description|h
 |[[ASN1Object::getDer()]]|returns a binary object containing the {{{DER}}}-encoded representation of the ASN.1 data|
-|[[ASN1Object::getQoreData()]]|returns Qore data corresponding approxiomately to the ASN.1 data contained by the type|
+|[[ASN1Object::getQoreData()]]|returns Qore data corresponding (approximately) to the ASN.1 data contained by the type|
 
 ''Static Methods''
 |!Method Name|!Description|h
@@ -573,15 +602,15 @@ Returns a subclass of [[ASN1Object]].
 !Exceptions
 :{{{ASN1OBJECT-PARSE-ERROR}}}: error decoding DER data, unsupported ASN.1 type encountered</pre>
 </div>
-<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" modified="200808280846" changecount="13">
+<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" modified="200808281110" changecount="15">
 <pre>{{{ASN1Sequence}}} is a subclass of [[ASN1Object]] representing an ASN.1 Sequence.
 
 ''Methods''
 |!Method Name|!Description|h
 |[[ASN1Sequence::constructor()]]|creates an empty object, does not take any arguments|
 |[[ASN1Sequence::copy()]]|returns a copy of the object|
-|[[ASN1Sequence::add()]]|adds an ASN1Object (or subclass) to the end of the Sequence|
-|[[ASN1Sequence::get()]]|retrieves the ASN1Object subclass at the element location passed as an argument|
+|[[ASN1Sequence::add()]]|adds an ASN1Object (subclass) to the end of the Sequence|
+|[[ASN1Sequence::get()]]|retrieves the ASN1Object (subclass) at the element location passed as an argument|
 |[[ASN1Sequence::size()]]|returns the number of elements in the Sequence|</pre>
 </div>
 <div title="ASN1Sequence::add()" modifier="DavidNichols" created="200808271554" modified="200808280846" changecount="13">
@@ -595,7 +624,7 @@ This function does not return any value.
 !Exceptions
 :{{{ASN1SEQUENCE-ADD-ERROR}}}: incorrect argument passed to method.</pre>
 </div>
-<div title="ASN1Sequence::constructor()" modifier="DavidNichols" created="200808271550" modified="200808271554" changecount="10">
+<div title="ASN1Sequence::constructor()" modifier="DavidNichols" created="200808271550" modified="200808281133" changecount="11">
 <pre>!Synopsis
 Creates an empty ASN1Sequence object; does not take any arguments.
 !Usage
@@ -604,7 +633,7 @@ Creates an empty ASN1Sequence object; does not take any arguments.
 !Exceptions
 This method does not throw any exceptions.</pre>
 </div>
-<div title="ASN1Sequence::copy()" modifier="DavidNichols" created="200808271554" modified="200808271554" changecount="10">
+<div title="ASN1Sequence::copy()" modifier="DavidNichols" created="200808271554" modified="200808281133" changecount="11">
 <pre>!Synopsis
 Returns a deep copy of the ASN1Sequence object.
 !Usage
@@ -613,7 +642,7 @@ Returns a deep copy of the ASN1Sequence object.
 !Exceptions
 This method does not throw any exceptions.</pre>
 </div>
-<div title="ASN1Sequence::get()" modifier="DavidNichols" created="200808280848" modified="200808280848" changecount="2">
+<div title="ASN1Sequence::get()" modifier="DavidNichols" created="200808280848" modified="200808280848" changecount="5">
 <pre>!Synopsis
 Retrieves the ASN1Object subclass at the location given as the sole argument to the method.  If the element location is not valid (negative or greater than the number of elements in the Sequence) then {{{NOTHING}}} is returned.  Note that the first element in the sequence is element 0.
 !Usage
@@ -624,7 +653,7 @@ Returns an ASN1Object subclass or NOTHING
 !Exceptions
 This method does not throw any exceptions</pre>
 </div>
-<div title="ASN1Sequence::size()" modifier="DavidNichols" created="200808280832" changecount="2">
+<div title="ASN1Sequence::size()" modifier="DavidNichols" created="200808280832" changecount="5">
 <pre>!Synopsis
 Returns the number of elements in the sequence.
 !Usage
@@ -673,8 +702,8 @@ You can reach me at: mailto:david_nichols@users.sourceforge.net</pre>
 [[ASN1 Namespace]]
 </pre>
 </div>
-<div title="Introduction" modifier="DavidNichols" created="200808200719" modified="200808271436" changecount="36">
-<pre>The Qore {{{asn1}}} module is based on the [[ASN.1|http://en.wikipedia.org/wiki/ASN.1]] functionality provided by the [[openssl library|http://www.openssl.org]].
+<div title="Introduction" modifier="DavidNichols" created="200808200719" modified="200808281108" changecount="38">
+<pre>The Qore {{{asn1}}} module is based on the [[ASN.1|http://en.wikipedia.org/wiki/ASN.1]] functionality provided by the [[openssl library|http://www.openssl.org]].  The module allows for ASN.1 data structures to be dynamically created and parsed, and converted to concrete output formats (like DER).
 
 Note that this documentation is based on [[TittldyWiki|http://www.tiddlywiki.com/]], a wiki entirely contained in a single web page.
 
