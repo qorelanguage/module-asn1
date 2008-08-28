@@ -100,6 +100,32 @@ class QoreAsn1Sequence : public AbstractQoreAsn1Object
 
 	 return rv;
       }
+
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 return QC_ASN1SEQUENCE;
+      }
+
+      DLLLOCAL int size() const {
+	 AutoLocker al(m);
+	 return olist.size();
+      }
+
+      DLLLOCAL QoreObject *get(int index) const {
+	 AbstractQoreAsn1Object *obj;
+	 {
+	    AutoLocker al(m);
+	    if (index < 0 || index > (int)olist.size())
+	       return 0;
+
+	    obj = olist[index];
+	    obj->ref();
+	 }
+
+	 const QoreClass *qc = obj->getQoreClass();
+	 QoreObject *o = new QoreObject(qc, getProgram());
+	 o->setPrivate(qc->getID(), obj);
+	 return o;
+      }
 };
 
 #endif

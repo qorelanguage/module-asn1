@@ -23,9 +23,9 @@
 #ifndef _QORE_ASN1_H
 #define _QORE_ASN1_H
 
-#include <qore/Qore.h>
-
 #include "config.h"
+
+#include <qore/Qore.h>
 
 #include <openssl/asn1.h>
 

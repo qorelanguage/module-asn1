@@ -33,7 +33,7 @@ class QoreAsn1UTF8String : public QoreAsn1String
    protected:
 
    public:
-      DLLLOCAL QoreAsn1UTF8String(const QoreString *str) : QoreAsn1String(str->getBuffer(), str->strlen(), V_ASN1_UTF8STRING)
+      DLLLOCAL QoreAsn1UTF8String(const QoreString *str) : QoreAsn1String(V_ASN1_UTF8STRING, str->getBuffer(), str->strlen())
       {
       }
 
@@ -50,6 +50,10 @@ class QoreAsn1UTF8String : public QoreAsn1String
 	 int hlen = (char *)p - (char *)b->getPtr();
 
 	 return new QoreStringNode((const char *)p, b->size() - hlen, QCS_UTF8);
+      }
+
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 return QC_ASN1UTF8STRING;
       }
 };
 

@@ -573,16 +573,18 @@ Returns a subclass of [[ASN1Object]].
 !Exceptions
 :{{{ASN1OBJECT-PARSE-ERROR}}}: error decoding DER data, unsupported ASN.1 type encountered</pre>
 </div>
-<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" changecount="10">
+<div title="ASN1Sequence" modifier="DavidNichols" created="200808271540" modified="200808280846" changecount="13">
 <pre>{{{ASN1Sequence}}} is a subclass of [[ASN1Object]] representing an ASN.1 Sequence.
 
 ''Methods''
 |!Method Name|!Description|h
 |[[ASN1Sequence::constructor()]]|creates an empty object, does not take any arguments|
 |[[ASN1Sequence::copy()]]|returns a copy of the object|
-|[[ASN1Sequence::add()]]|adds an ASN1Object (or subclass) to the end of the Sequence|</pre>
+|[[ASN1Sequence::add()]]|adds an ASN1Object (or subclass) to the end of the Sequence|
+|[[ASN1Sequence::get()]]|retrieves the ASN1Object subclass at the element location passed as an argument|
+|[[ASN1Sequence::size()]]|returns the number of elements in the Sequence|</pre>
 </div>
-<div title="ASN1Sequence::add()" modifier="DavidNichols" created="200808271554" modified="200808271557" changecount="10">
+<div title="ASN1Sequence::add()" modifier="DavidNichols" created="200808271554" modified="200808280846" changecount="13">
 <pre>!Synopsis
 Adds a subclass of ASN1Object to the Sequence; the argument is copied, and the copy is added to the sequence.  If the argument passed is not a subclass of ASN1Object, an exception is raised.
 !Usage
@@ -608,6 +610,28 @@ Returns a deep copy of the ASN1Sequence object.
 !Usage
 !!!{{{ASN1Sequence::copy()}}}
 ** example: {{{ my $new_seq = $old_seq.copy(); }}}
+!Exceptions
+This method does not throw any exceptions.</pre>
+</div>
+<div title="ASN1Sequence::get()" modifier="DavidNichols" created="200808280848" modified="200808280848" changecount="2">
+<pre>!Synopsis
+Retrieves the ASN1Object subclass at the location given as the sole argument to the method.  If the element location is not valid (negative or greater than the number of elements in the Sequence) then {{{NOTHING}}} is returned.  Note that the first element in the sequence is element 0.
+!Usage
+!!!{{{ASN1Sequence::get(integer)}}}
+** example: {{{ my $object = $seq.get(1); # gets the second element in the sequence }}}
+!Return Value
+Returns an ASN1Object subclass or NOTHING
+!Exceptions
+This method does not throw any exceptions</pre>
+</div>
+<div title="ASN1Sequence::size()" modifier="DavidNichols" created="200808280832" changecount="2">
+<pre>!Synopsis
+Returns the number of elements in the sequence.
+!Usage
+!!!{{{ASN1Sequence::size()}}}
+** example: {{{ my $num = $seq.size(); }}}
+!Return Value
+An {{{integer}}} value representing the number of elements in the Sequence.
 !Exceptions
 This method does not throw any exceptions.</pre>
 </div>
@@ -644,9 +668,9 @@ This method does not throw any exceptions.</pre>
 <pre>David Nichols is the author of the [[Qore programming language|http://qoretechnologies.com/qore]] and of this ans1 module.
 You can reach me at: mailto:david_nichols@users.sourceforge.net</pre>
 </div>
-<div title="DefaultTiddlers" modifier="DavidNichols" created="200808200745" modified="200808201020" changecount="3">
+<div title="DefaultTiddlers" modifier="DavidNichols" created="200808200745" modified="200808280828" changecount="4">
 <pre>[[Introduction]]
-[[XmlSec Namespace]]
+[[ASN1 Namespace]]
 </pre>
 </div>
 <div title="Introduction" modifier="DavidNichols" created="200808200719" modified="200808271436" changecount="36">

@@ -20,8 +20,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <qore/Qore.h>
-
 #include "qore-asn1.h"
 
 QoreStringNode *asn1_module_init();

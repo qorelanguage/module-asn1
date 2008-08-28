@@ -82,6 +82,10 @@ class QoreAsn1Integer : public AbstractQoreAsn1Object
 	 OPENSSL_free(bnc);
 	 return str;
       }
+
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 return QC_ASN1INTEGER;
+      }
 };
 
 #endif

@@ -34,6 +34,7 @@ class AbstractQoreAsn1Object : public AbstractPrivateData
       DLLLOCAL virtual BinaryNode *getDerData() const = 0;
       DLLLOCAL virtual AbstractQoreNode *getQoreData() const = 0;
       DLLLOCAL virtual bool isContainer() const { return false; }
+      DLLLOCAL virtual const QoreClass *getQoreClass() const = 0;
 
       DLLLOCAL static int decodeLen(const unsigned char *&ptr) {
 	 if (*ptr <= 127) {

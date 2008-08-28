@@ -91,6 +91,10 @@ class QoreAsn1ObjectIdentifier : public AbstractQoreAsn1Object
       DLLLOCAL virtual AbstractQoreNode *getQoreData() const {
 	 return getName();
       }
+
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 return QC_ASN1OBJECTIDENTIFIER;
+      }
 };
 
 #endif

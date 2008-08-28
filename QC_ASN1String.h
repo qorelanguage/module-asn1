@@ -40,12 +40,12 @@ class QoreAsn1String : public AbstractQoreAsn1Object
       }
 
    public:
-      DLLLOCAL QoreAsn1String(const void *ptr, int len, int type)
+      DLLLOCAL QoreAsn1String(int type, const void *ptr = 0, int len = 0)
       {
 	 //printd(5, "QoreAsn1String::QoreAsn1String() this=%08p type=%d len=%d ptr=%08p\n", this, type, len, ptr);
 
 	 str = ASN1_STRING_type_new(type);
-	 if (!str)
+	 if (!str || !len || !ptr)
 	    return;
 
 	 ASN1_STRING_set(str, ptr, len);
@@ -98,6 +98,12 @@ class QoreAsn1String : public AbstractQoreAsn1Object
 	 rv->append(p, b->size() - hlen);
 	 return rv;
 */
+      }
+
+      // this function should never be called
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 assert(false);
+	 return QC_ASN1STRING;
       }
 };
 

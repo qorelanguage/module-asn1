@@ -64,7 +64,7 @@ class asn1_test::asn1_test {
 	    my $msg = "hello";
 	    my $hash = SHA1_bin($msg);
 
-	    my $req = asn1_test::get_timestamp_req($hash, rand());
+	    my $req = $.get_timestamp_req($hash, rand());
 
 	    # save to file
 	    #my $f = new File();
@@ -76,6 +76,18 @@ class asn1_test::asn1_test {
 	    #printf("%N\n", $req2.getQoreData());
 
 	    $.test_value($req.getDer(), $req2.getDer(), "ASN1 generation and parsing");
+
+	    my $bin = binary("hi");
+	    my $bs = new ASN1BitString($bin);
+
+	    $.test_value($bs.getBinary(), $bin, "ASN1BitString::getQoreData()");
+
+	    my $l = (False, True, True, False, True, False, False, False,
+		     False, True, True, False, True, False, False, True );
+	    $.test_value($bs.getQoreData(), $l, "ASN1BitString::getQoreData()");
+
+	    $.test_value($bs.getBitString(), "0110100001101001", "ASN1BitSTring::getBitString()");
+
             $.ip += 1;
 	}
     }
@@ -129,12 +141,14 @@ class asn1_test::asn1_test {
         $.thash.$msg = True;
     }
 
-    static private get_timestamp_req($hash, $nonce) {
+    private get_timestamp_req($hash, $nonce) {
     	my $seq = new ASN1Sequence();
 
 	$seq.add(new ASN1Integer(1));
 	$seq.add(asn1_test::get_message_imprint($hash));
 	$seq.add(new ASN1Integer($nonce));
+
+	$.test_value(3, $seq.size(), "ASN1Sequence::size()");
 
 	return $seq;
     }

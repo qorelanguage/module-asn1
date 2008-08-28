@@ -61,6 +61,17 @@ static AbstractQoreNode *ASN1SEQUENCE_add(QoreObject *self, QoreAsn1Sequence *se
    return 0;
 }
 
+static AbstractQoreNode *ASN1SEQUENCE_size(QoreObject *self, QoreAsn1Sequence *seq, const QoreListNode *params, ExceptionSink *xsink)
+{
+   return new QoreBigIntNode(seq->size());
+}
+
+static AbstractQoreNode *ASN1SEQUENCE_get(QoreObject *self, QoreAsn1Sequence *seq, const QoreListNode *params, ExceptionSink *xsink)
+{
+   const AbstractQoreNode *p = get_param(params, 0);
+   return seq->get(p ? p->getAsInt() : 0);
+}
+
 QoreClass *initASN1SequenceClass(QoreClass *parent)
 {
    QC_ASN1SEQUENCE = new QoreClass("ASN1Sequence");
@@ -71,7 +82,9 @@ QoreClass *initASN1SequenceClass(QoreClass *parent)
    QC_ASN1SEQUENCE->setConstructor(ASN1SEQUENCE_constructor);
    QC_ASN1SEQUENCE->setCopy((q_copy_t)ASN1SEQUENCE_copy);
 
-   QC_ASN1SEQUENCE->addMethod("add",    (q_method_t)ASN1SEQUENCE_add);
+   QC_ASN1SEQUENCE->addMethod("add",      (q_method_t)ASN1SEQUENCE_add);
+   QC_ASN1SEQUENCE->addMethod("get",      (q_method_t)ASN1SEQUENCE_get);
+   QC_ASN1SEQUENCE->addMethod("size",     (q_method_t)ASN1SEQUENCE_size);
    
    return QC_ASN1SEQUENCE;
 }

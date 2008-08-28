@@ -33,7 +33,7 @@ class QoreAsn1OctetString : public QoreAsn1String
    protected:
 
    public:
-      DLLLOCAL QoreAsn1OctetString(const void *ptr, int len) : QoreAsn1String(ptr, len, V_ASN1_OCTET_STRING)
+      DLLLOCAL QoreAsn1OctetString(const void *ptr, int len) : QoreAsn1String(V_ASN1_OCTET_STRING, ptr, len)
       {
       }
 
@@ -54,6 +54,10 @@ class QoreAsn1OctetString : public QoreAsn1String
 	 //printd(5, "getQoreData() new binarynode len=%d\n", b->size() - hlen);
 	 rv->append(p, b->size() - hlen);
 	 return rv;
+      }
+
+      DLLLOCAL virtual const QoreClass *getQoreClass() const {
+	 return QC_ASN1OCTETSTRING;
       }
 };
 

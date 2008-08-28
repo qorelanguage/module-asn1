@@ -27,16 +27,22 @@ QoreClass *QC_ASN1BITSTRING;
 
 static void ASN1BITSTRING_constructor(QoreObject *self, const QoreListNode *params, ExceptionSink *xsink)
 {
-   const BinaryNode *b = test_binary_param(params, 0);
-   if (!b) {
-      xsink->raiseException("ASN1BITSTRING-CONSTUCTOR-ERROR", "expecting binary argument to ASN1BitString::constructor()");
-      return;
+   QoreAsn1BitString *ostr = 0;
+
+   const AbstractQoreNode *p = get_param(params, 0);
+   qore_type_t t = p ? p->getType() : NT_NOTHING;
+
+   if (t == NT_BINARY) {
+      const BinaryNode *b = reinterpret_cast<const BinaryNode *>(p);
+      ostr = new QoreAsn1BitString(b->getPtr(), b->size());
+   }
+   else if (t == NT_LIST) {
+      const QoreListNode *l = reinterpret_cast<const QoreListNode *>(p);
+      ostr = new QoreAsn1BitString(l);
    }
 
-   QoreAsn1BitString *ostr = new QoreAsn1BitString(b->getPtr(), b->size());
-
    if (!ostr) {
-      xsink->raiseException("ASN1BITSTRING-CONSTUCTOR-ERROR", "failure creating ASN1BitString object");
+      xsink->raiseException("ASN1BITSTRING-CONSTUCTOR-ERROR", "expecting binary or list argument to ASN1BitString::constructor()");
       return;
    }
 
@@ -54,6 +60,16 @@ static void ASN1BITSTRING_copy(QoreObject *self, QoreObject *old, QoreAsn1BitStr
    self->setPrivate(CID_ASN1BITSTRING, nstr);   
 }
 
+static AbstractQoreNode *ASN1BITSTRING_getBinary(QoreObject *self, QoreAsn1BitString *str, const QoreListNode *params, ExceptionSink *xsink)
+{
+   return str->getBinary();
+}
+
+static AbstractQoreNode *ASN1BITSTRING_getBitString(QoreObject *self, QoreAsn1BitString *str, const QoreListNode *params, ExceptionSink *xsink)
+{
+   return str->getBitString();
+}
+
 QoreClass *initASN1BitStringClass(QoreClass *parent)
 {
    QC_ASN1BITSTRING = new QoreClass("ASN1BitString");
@@ -63,6 +79,9 @@ QoreClass *initASN1BitStringClass(QoreClass *parent)
 
    QC_ASN1BITSTRING->setConstructor(ASN1BITSTRING_constructor);
    QC_ASN1BITSTRING->setCopy((q_copy_t)ASN1BITSTRING_copy);
+
+   QC_ASN1BITSTRING->addMethod("getBinary",    (q_method_t)ASN1BITSTRING_getBinary);
+   QC_ASN1BITSTRING->addMethod("getBitString", (q_method_t)ASN1BITSTRING_getBitString);
 
    return QC_ASN1BITSTRING;
 }
