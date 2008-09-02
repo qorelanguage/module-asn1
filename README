@@ -5,6 +5,9 @@ Requires qore 0.7.0 and openssl headers and libraries to build.
 
 Documentation in docs/asn1-module-doc.html (using TiddlyWiki)
 
+This initial version of the asn1 module only supports a subset of ASN.1 data types, in fact, only enough to create and parse RFC3161 timestamp requests and responses.
+It should be fairly easy to add support for more ASN.1 data types and functionality in the future though.
+
 test/example script: test-asn1.q
 
 BUILD AND INSTALL
