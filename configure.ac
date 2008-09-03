@@ -167,6 +167,15 @@ else
    bits=32
 fi
 
+AC_ARG_ENABLE([single-compilation-unit],
+  [AS_HELP_STRING([--enable-single-compilation-unit],
+                  [enable compilation as a single unit (default: on)])],
+  [case "${enable_single_compilation_unit}" in
+       yes|no) ;;
+       *)      AC_MSG_ERROR(bad value ${enable_single_compilation_unit} for --enable-single-compilation-unit) ;;
+      esac],
+  [enable_single_compilation_unit=yes])
+
 set_openssl_cppflags()
 {
     if test "$1" != "/usr/include"; then
@@ -478,12 +487,13 @@ AC_DEFINE_UNQUOTED([MODULE_TARGET_BITS], $bits, [32 or 64 bit build])
 
 AM_CONDITIONAL([COND_DEBUG],      [test "$enable_debug" = yes])
 AM_CONDITIONAL([COND_PROFILE],    [test "$enable_profile" = yes])
+AM_CONDITIONAL([COND_SINGLE_COMPILATION_UNIT], [test "$enable_single_compilation_unit" = yes])
 
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
 
-echo "*** BUILTIN FEATURES ***"
-printf "%-24s: %s %s" library "$OS" "$cpu_family"
+echo "*** MODULE FEATURES ***"
+printf "%-24s: %s %s" module "$OS" "$cpu_family"
 if test "$enable_64bit" = "yes"; then
    printf " (64-bit)\n"
 else
