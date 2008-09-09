@@ -45,7 +45,7 @@ Summary: ASN.1 Module for Qore
 Name: qore-asn1-module
 Version: 0.0.1
 Release: 1%{dist}
-License: GPL
+License: LGPL
 Group: Development/Languages
 URL: http://www.qoretechnologies.com/qore
 Source: http://prdownloads.sourceforge.net/qore/%{name}-%{version}.tar.gz
