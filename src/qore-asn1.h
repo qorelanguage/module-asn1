@@ -28,6 +28,8 @@
 #include <qore/Qore.h>
 
 #include <openssl/asn1.h>
+#include <openssl/objects.h>
+#include <openssl/err.h>
 
 #ifndef HAVE_OPENSSL_CONST
 #define OPENSSL_CONST
