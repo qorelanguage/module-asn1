@@ -1,0 +1,145 @@
+2008-09-16 20:54  david_nichols
+
+	* src/qore-asn1.h: build and configure fixes
+
+2008-09-09 09:11  david_nichols
+
+	* docs/asn1-module-doc.html: updated docs
+
+2008-09-09 07:05  david_nichols
+
+	* qore-asn1-module.spec, src/asn1.cc: updated license in spec file
+	  and in module file to be LGPL instead of GPL
+
+2008-09-03 12:11  david_nichols
+
+	* COPYING: updated license for modules to LGPL (*not* GPL)
+
+2008-09-03 08:43  david_nichols
+
+	* configure.ac, m4, m4/acx_pthread.m4, reconf.sh: added pthread
+	  detection to configure and includes to build
+
+2008-09-03 07:38  david_nichols
+
+	* configure.ac, docs/asn1-module-doc.html: configure and doc
+	  udpates
+
+2008-09-02 15:05  david_nichols
+
+	* AbstractQoreAsn1Object.h, Makefile.am, QC_ASN1BitString.cc,
+	  QC_ASN1BitString.h, QC_ASN1Boolean.cc, QC_ASN1Boolean.h,
+	  QC_ASN1Integer.cc, QC_ASN1Integer.h, QC_ASN1ObjectIdentifier.cc,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1OctetString.cc,
+	  QC_ASN1OctetString.h, QC_ASN1Sequence.cc, QC_ASN1Sequence.h,
+	  QC_ASN1String.cc, QC_ASN1String.h, QC_ASN1UTF8String.cc,
+	  QC_ASN1UTF8String.h, asn1.cc, configure.ac,
+	  qore-asn1-module.spec, qore-asn1.h, src,
+	  src/AbstractQoreAsn1Object.h, src/Makefile.am,
+	  src/QC_ASN1BitString.cc, src/QC_ASN1BitString.h,
+	  src/QC_ASN1Boolean.cc, src/QC_ASN1Boolean.h,
+	  src/QC_ASN1Integer.cc, src/QC_ASN1Integer.h,
+	  src/QC_ASN1ObjectIdentifier.cc, src/QC_ASN1ObjectIdentifier.h,
+	  src/QC_ASN1OctetString.cc, src/QC_ASN1OctetString.h,
+	  src/QC_ASN1Sequence.cc, src/QC_ASN1Sequence.h,
+	  src/QC_ASN1String.cc, src/QC_ASN1String.h,
+	  src/QC_ASN1UTF8String.cc, src/QC_ASN1UTF8String.h, src/asn1.cc,
+	  src/qore-asn1.h: updated build, added spec file
+
+2008-09-02 14:41  david_nichols
+
+	* README: changed module directory to
+	  $libdir/qore-module-api-$(module_api_version), updated build and
+	  some docs
+
+2008-08-29 06:13  david_nichols
+
+	* docs/asn1-module-doc.html: updated docs
+
+2008-08-28 14:25  david_nichols
+
+	* QC_ASN1BitString.h, QC_ASN1Integer.cc, QC_ASN1Integer.h,
+	  docs/asn1-module-doc.html, test-asn1.q: updated docs, added tests
+
+2008-08-28 11:34  david_nichols
+
+	* docs/asn1-module-doc.html: updated docs
+
+2008-08-28 11:06  david_nichols
+
+	* AbstractQoreAsn1Object.h, QC_ASN1BitString.cc,
+	  QC_ASN1BitString.h, QC_ASN1Boolean.h, QC_ASN1Integer.h,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1OctetString.h,
+	  QC_ASN1Sequence.cc, QC_ASN1Sequence.h, QC_ASN1String.h,
+	  QC_ASN1UTF8String.h, asn1.cc, docs/asn1-module-doc.html,
+	  qore-asn1.h, test-asn1.q: fixed BitString implementation and
+	  added tests
+
+2008-08-28 08:22  david_nichols
+
+	* QC_ASN1BitString.cc, QC_ASN1BitString.h: missing files
+
+2008-08-27 16:04  david_nichols
+
+	* QC_ASN1Sequence.cc, asn1.cc, docs, docs/asn1-module-doc.html:
+	  added copy method to ASN1Sequence, new constants, initial
+	  documentation checkin
+
+2008-08-27 14:20  david_nichols
+
+	* Makefile.am, asn1.cc, configure.ac, qore-asn1.h: updated to qore
+	  0.7.0 changes
+
+2008-08-27 06:35  david_nichols
+
+	* config.h: removed extraseous file
+
+2008-08-27 05:06  david_nichols
+
+	* Makefile.am, QC_ASN1OctetString.cc, QC_ASN1OctetString.h,
+	  QC_ASN1String.cc, QC_ASN1String.h, QC_ASN1UTF8String.cc,
+	  QC_ASN1UTF8String.h, asn1.cc, config.h, qore-asn1.h, test-asn1.q:
+	  split ASN1String into ASN1OctetString and ASN1UTF8String classes
+
+2008-08-27 04:08  david_nichols
+
+	* asn1.cc: include casts to (unsigned char **) without "const" to
+	  work with older openssl versions
+
+2008-08-26 14:40  david_nichols
+
+	* AbstractQoreAsn1Object.h, QC_ASN1Boolean.h, QC_ASN1Integer.h,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1Sequence.h, QC_ASN1String.h,
+	  asn1.cc, test-asn1.q: added capability to serialize to a qore
+	  data structure
+
+2008-08-26 13:41  david_nichols
+
+	* AbstractQoreAsn1Object.h, QC_ASN1Boolean.h, QC_ASN1Integer.h,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1Sequence.cc, QC_ASN1Sequence.h,
+	  QC_ASN1String.h, asn1.cc: eliminated the possibility for
+	  recursive ASN1 trees
+
+2008-08-26 13:18  david_nichols
+
+	* AbstractQoreAsn1Object.h, QC_ASN1Boolean.h, QC_ASN1Integer.h,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1Sequence.h, QC_ASN1String.h,
+	  test-asn1.q: fixed memory errors and made ASN1Sequence class
+	  thread-safe
+
+2008-08-26 08:28  david_nichols
+
+	* AbstractQoreAsn1Object.h, QC_ASN1Integer.h,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1Sequence.h, QC_ASN1String.h,
+	  asn1.cc, qore-asn1.h, test-asn1.q: added DER parsing, updated
+	  test script
+
+2008-08-25 16:22  david_nichols
+
+	* ., AUTHORS, COPYING, ChangeLog, Makefile.am, NEWS,
+	  QC_ASN1Boolean.cc, QC_ASN1Boolean.h, QC_ASN1Integer.cc,
+	  QC_ASN1Integer.h, QC_ASN1ObjectIdentifier.cc,
+	  QC_ASN1ObjectIdentifier.h, QC_ASN1Sequence.cc, QC_ASN1Sequence.h,
+	  QC_ASN1String.cc, QC_ASN1String.h, README, asn1.cc, configure.ac,
+	  ltmain.sh, qore-asn1.h, reconf.sh, test-asn1.q: initial import
+
