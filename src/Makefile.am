@@ -16,5 +16,5 @@ endif
 endif
 
 install-exec-hook:
-	mv $(libdir)/asn1.$(MODULE_SUFFIX) $(libdir)/asn1.qmod
-	rm -f $(libdir)/asn1.la $(libdir)/asn1.a
+	mv $(DESTDIR)$(libdir)/asn1.$(MODULE_SUFFIX) $(DESTDIR)$(libdir)/asn1.qmod
+	rm -f $(DESTDIR)$(libdir)/asn1.la $(DESTDIR)$(libdir)/asn1.a
