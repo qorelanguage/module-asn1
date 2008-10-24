@@ -291,8 +291,7 @@ set_qore_cppflags()
     fi
 }
 
-find_qore()
-{
+find_qore() {
     lib=$1/lib${LIBSUFFIX}
 
     # if we only want the static qore libraries
