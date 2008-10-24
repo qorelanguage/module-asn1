@@ -3,7 +3,7 @@ ASN1_SOURCES = asn1.cc QC_ASN1Sequence.cc QC_ASN1Integer.cc QC_ASN1ObjectIdentif
 
 lib_LTLIBRARIES = asn1.la
 asn1_la_SOURCES = $(ASN1_SOURCES)
-asn1_la_LDFLAGS = -module -avoid-version $(ASN1_LDFLAGS) $(LIBXML2_LDFLAGS) $(QORE_LDFLAGS)
+asn1_la_LDFLAGS = -module -avoid-version $(ASN1_LDFLAGS) $(LIBXML2_LDFLAGS)
 
 AM_CPPFLAGS = $(ASN1_CPPFLAGS) $(QORE_CPPFLAGS) $(LIBXML2_CPPFLAGS)
 
