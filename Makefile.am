@@ -14,6 +14,7 @@ noinst_HEADERS = src/AbstractQoreAsn1Object.h \
 	src/qore-asn1.h
 
 EXTRA_DIST = COPYING ChangeLog AUTHORS README \
+	RELEASE-NOTES \
 	qore-asn1-module.spec docs/asn1-module-doc.html
 
 libtool: $(LIBTOOL_DEPS)
