@@ -1,5 +1,5 @@
-%define module_api 0.4
-%define module_dir %{_libdir}/qore-module-api-%{module_api}
+%define module_api %(qore --module-api 2>/dev/null)
+%define module_dir %(qore --module-dir 2>/dev/null)
 
 %if 0%{?sles_version}
 
@@ -43,7 +43,7 @@
 
 Summary: ASN.1 Module for Qore
 Name: qore-asn1-module
-Version: 0.0.1
+Version: 0.0.2
 Release: 1%{dist}
 License: LGPL
 Group: Development/Languages
@@ -52,7 +52,7 @@ Source: http://prdownloads.sourceforge.net/qore/%{name}-%{version}.tar.gz
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: /usr/bin/env
-Requires: qore-module-api-0.4
+Requires: qore-module-api-%{module_api}
 BuildRequires: gcc-c++
 BuildRequires: qore-devel
 BuildRequires: openssl-devel
@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{module_dir}/asn1.qmod
+%{module_dir}/asn1-api-%{module_api}.qmod
 %doc COPYING README ChangeLog AUTHORS docs/asn1-module-doc.html
 
 %changelog
