@@ -26,11 +26,9 @@ QoreStringNode *asn1_module_init();
 void asn1_module_ns_init(QoreNamespace *rns, QoreNamespace *qns);
 void asn1_module_delete();
 
-#define QORE_ASN1_VERSION "0.1"
-
 // qore module symbols
 DLLEXPORT char qore_module_name[] = "asn1";
-DLLEXPORT char qore_module_version[] = QORE_ASN1_VERSION;
+DLLEXPORT char qore_module_version[] = PACKAGE_VERSION;
 DLLEXPORT char qore_module_description[] = "asn1 module";
 DLLEXPORT char qore_module_author[] = "David Nichols";
 DLLEXPORT char qore_module_url[] = "http://qoretechnologies.com/qore";
@@ -248,7 +246,7 @@ QoreStringNode *asn1_module_init()
    ASN1_NS.addSystemClass(initASN1BitStringClass(QC_ASN1STRING));
 
    // add constants
-   ASN1_NS.addConstant("ModuleVersion",            new QoreStringNode(QORE_ASN1_VERSION));
+   ASN1_NS.addConstant("ModuleVersion",            new QoreStringNode(PACKAGE_VERSION));
 
    ASN1_NS.addConstant("V_ASN1_BIT_STRING",        new QoreBigIntNode(V_ASN1_BIT_STRING));
    ASN1_NS.addConstant("V_ASN1_OCTET_STRING",      new QoreBigIntNode(V_ASN1_OCTET_STRING));
