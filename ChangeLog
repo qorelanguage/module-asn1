@@ -1,3 +1,20 @@
+2008-11-03 14:03  david_nichols
+
+	* src/asn1.cc: make module version in module header reflect actual
+	  version
+
+2008-10-30 10:27  david_nichols
+
+	* Makefile.am, qore-asn1-module.spec: added release notes to dist
+
+2008-10-30 09:19  david_nichols
+
+	* README: updates
+
+2008-10-30 09:01  david_nichols
+
+	* ChangeLog, RELEASE-NOTES: updated changelog, added release notes
+
 2008-10-30 08:58  david_nichols
 
 	* configure.ac, qore-asn1-module.spec, src/Makefile.am: updated
