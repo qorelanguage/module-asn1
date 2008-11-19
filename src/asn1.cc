@@ -58,8 +58,7 @@ static AbstractQoreNode *ASN1OBJECT_getQoreData(QoreObject *self, AbstractQoreAs
    return obj->getQoreData();
 }
 
-static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
-{
+static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink) {
    const unsigned char *t = p + 1;
    int len = AbstractQoreAsn1Object::decodeLen(t);
    // the cast on the following line is in case of older openssl versions
@@ -95,9 +94,8 @@ static AbstractQoreAsn1Object *parseAsn1String(int type, const unsigned char *&p
    return 0;
 }
 
-static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink)
-{
-   int type = *p;
+static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const QoreClass *&qc, ExceptionSink *xsink) {
+   int type = *p & V_ASN1_PRIMITIVE_TAG;
    switch (type) {
       case V_ASN1_BOOLEAN: {
 	 qc = QC_ASN1BOOLEAN;
@@ -200,8 +198,7 @@ static AbstractQoreAsn1Object *parseAsn1Object(const unsigned char *&p, const Qo
    return 0;
 }
 
-static AbstractQoreNode *f_parse(const QoreListNode *params, ExceptionSink *xsink)
-{
+static AbstractQoreNode *f_ASN1OBJECT_parse(const QoreListNode *params, ExceptionSink *xsink) {
    const BinaryNode *b = test_binary_param(params, 0);
    if (!b) {
       xsink->raiseException("ASN1OBJECT-PARSE-ERROR", "expecting a sole binary object argument in DER format to ASN1Object::parse()");
@@ -222,8 +219,7 @@ static AbstractQoreNode *f_parse(const QoreListNode *params, ExceptionSink *xsin
    return qo;
 }
 
-QoreStringNode *asn1_module_init()
-{
+QoreStringNode *asn1_module_init() {
    QoreClass *QC_ASN1OBJECT = new QoreClass("ASN1Object");
    CID_ASN1OBJECT = QC_ASN1OBJECT->getID();
 
@@ -233,7 +229,7 @@ QoreStringNode *asn1_module_init()
    QC_ASN1OBJECT->addMethod("getQoreData", (q_method_t)ASN1OBJECT_getQoreData);
 
    // static methods
-   QC_ASN1OBJECT->addStaticMethod("parse", f_parse);
+   QC_ASN1OBJECT->addStaticMethod("parse", f_ASN1OBJECT_parse);
 
    ASN1_NS.addSystemClass(QC_ASN1OBJECT);
    ASN1_NS.addSystemClass(initASN1SequenceClass(QC_ASN1OBJECT));

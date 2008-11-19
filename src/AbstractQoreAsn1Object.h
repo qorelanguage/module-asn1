@@ -23,8 +23,7 @@
 #ifndef _QORE_ASN1_ABSTRACTQOREASN1OBJECT_H
 #define _QORE_ASN1_ABSTRACTQOREASN1OBJECT_H
 
-class AbstractQoreAsn1Object : public AbstractPrivateData
-{
+class AbstractQoreAsn1Object : public AbstractPrivateData {
    protected:
 
    public:
@@ -44,16 +43,27 @@ class AbstractQoreAsn1Object : public AbstractPrivateData
 	 if (len == 1)
 	    return *(ptr++);
 
-	 if (len == 2)
-	    return (*(ptr++) << 8) | *(ptr++);
+         int rc;
+         if (len == 2) {
+            rc = (*(ptr++) << 8);
+            rc |= *(ptr++);
+            return rc;
+         }
 
-	 if (len == 3)
-	    return (*(ptr++) << 16) | (*(ptr++) << 8) | *(ptr++);
+         if (len == 3) {
+            rc = (*(ptr++) << 16);
+            rc = (*(ptr++) << 8);
+            rc |= *(ptr++);
+            return rc;
+         }
 
-	 if (len == 4)
-	    return (*(ptr++) << 24) | (*(ptr++) << 16) | (*(ptr++) << 8) | *(ptr++);
-
-	 assert(false);
+         if (len == 4) {
+            rc = (*(ptr++) << 24);
+            rc = (*(ptr++) << 16);
+            rc = (*(ptr++) << 8);
+            rc |= *(ptr++);
+            return rc;
+         }
 
 	 return 0;
       }
