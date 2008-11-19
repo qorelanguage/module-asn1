@@ -1,3 +1,17 @@
+2008-11-19 15:31  david_nichols
+
+	* RELEASE-NOTES: updated for bug fixes
+
+2008-11-19 15:24  david_nichols
+
+	* src/AbstractQoreAsn1Object.h, src/asn1.cc: ignore constructed bit
+	  when parsing binary asn.1 data, fixed length detection when the
+	  length is more than 1 byte
+
+2008-11-03 14:06  david_nichols
+
+	* ChangeLog: updated changelog
+
 2008-11-03 14:03  david_nichols
 
 	* src/asn1.cc: make module version in module header reflect actual
