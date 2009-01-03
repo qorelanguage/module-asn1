@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # AC_PREREQ(2.59)
-AC_INIT([qore-asn1-module], [0.0.2],
+AC_INIT([qore-asn1-module], [0.0.3],
         [David Nichols <nicholsman@gmail.com>],
         [qore-asn1-module])
 AM_INIT_AUTOMAKE
@@ -29,6 +29,11 @@ else
    if test $ARCH = i686 -o $ARCH = i586 -o $ARCH = athlon ; then
       ARCH=i386
    fi
+fi
+
+# set find prefix
+if test -n "$prefix" -a "$prefix" != "NONE"; then
+   find_prefix="$prefix"
 fi
 
 #AC_CANONICAL_HOST
@@ -190,15 +195,13 @@ AC_ARG_ENABLE([single-compilation-unit],
       esac],
   [enable_single_compilation_unit=yes])
 
-set_openssl_cppflags()
-{
+set_openssl_cppflags() {
     if test "$1" != "/usr/include"; then
         OPENSSL_CPPFLAGS=-I$1
     fi
 }
 
-find_openssl()
-{
+find_openssl() {
     lib=$1/lib${LIBSUFFIX}
     # if we only want the static openssl libraries
     if test -n "$openssl_static"; then
@@ -249,7 +252,7 @@ AC_ARG_WITH([openssl-dir],
   [with_openssl_dir="$OPENSSL_DIR"])
 
 AC_MSG_CHECKING([for openssl libraries and header files])
-for dir in "${with_openssl_dir}" /usr / /usr/local /opt/gnu /opt/openssl /usr/local/openssl /opt/local /sw /usr/sfw /opt/sfw; do
+for dir in "${with_openssl_dir}" "${find_prefix}" /usr / /usr/local /opt/gnu /opt/openssl /usr/local/openssl /opt/local /sw /usr/sfw /opt/sfw; do
     find_openssl $dir
     if test -n "$OPENSSL_LDFLAGS"; then
         break
@@ -283,8 +286,7 @@ d2i_ASN1_type_bytes(0, &p, 0, 0);
     fi
 fi
 
-set_qore_cppflags()
-{
+set_qore_cppflags() {
     QORE_INC_DIR=$1
     if test "$1" != "/usr/include"; then
         QORE_CPPFLAGS=-I$1
@@ -345,7 +347,7 @@ AC_ARG_WITH([qore-dir],
   [with_qore_dir="$QORE_DIR"])
 
 AC_MSG_CHECKING([for qore libraries and header files])
-for dir in "${with_qore_dir}" /usr / /usr/local /opt/gnu /opt/qore /usr/local/qore /opt/local /sw /usr/sfw /opt/sfw; do
+for dir in "${with_qore_dir}" "${find_prefix}" /usr / /usr/local /opt/gnu /opt/qore /usr/local/qore /opt/local /sw /usr/sfw /opt/sfw; do
     find_qore $dir
     if test -n "$QORE_LDFLAGS"; then
         break
