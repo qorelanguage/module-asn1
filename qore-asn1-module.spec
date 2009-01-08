@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{module_dir}/asn1-api-%{module_api}.qmod
+%{module_dir}
 %doc COPYING README RELEASE-NOTES ChangeLog AUTHORS docs/asn1-module-doc.html
 
 %changelog
