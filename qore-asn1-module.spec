@@ -50,10 +50,7 @@ parse, and manipulate ASN.1 data.
 
 %prep
 %setup -q
-%ifarch x86_64 ppc64 x390x
-c64=--enable-64bit
-%endif
-./configure RPM_OPT_FLAGS="$RPM_OPT_FLAGS" --prefix=/usr --disable-debug $c64
+./configure RPM_OPT_FLAGS="$RPM_OPT_FLAGS" --prefix=/usr --disable-debug
 
 %build
 %{__make}
