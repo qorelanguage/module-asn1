@@ -324,8 +324,8 @@ find_openssl() {
 	AC_MSG_ERROR([not found])
     fi
 
-    QORE_LIB_LDFLAGS="$QORE_LIB_LDFLAGS $OPENSSL_LDFLAGS"
-    QORE_LIB_CPPFLAGS="$QORE_LIB_CPPFLAGS $OPENSSL_CPPFLAGS"
+    AC_SUBST(OPENSSL_CPPFLAGS)
+    AC_SUBST(OPENSSL_LDFLAGS)
 }
 
 # see if we can figure out where the openssl library is
