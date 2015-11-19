@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(qore-asn1-module VERSION 0.0.3 LANGUAGES CXX)
 
+option(INSTALL_DOCS "Install documentation" OFF)
+
 include(CheckCXXCompilerFlag)
 
 find_package(Qore REQUIRED)
@@ -45,3 +47,9 @@ qore_binary_module(${module_name} ${PROJECT_VERSION} ${OPENSSL_SSL_LIBRARY})
 qore_dist(${PROJECT_VERSION})
 
 qore_config_info()
+
+if(INSTALL_DOCS)
+include(GNUInstallDirs)
+install(FILES ${CMAKE_SOURCE_DIR}/docs/asn1-module-doc.html
+        DESTINATION ${CMAKE_INSTALL_FULL_DOCDIR}/html)
+endif()
