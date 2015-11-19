@@ -28,3 +28,6 @@ src/Makefile.in
 src/qc_*.cpp
 src/ql_*.cpp
 src/QC_*.cpp
+
+# ignore cmake build directories
+build*/
