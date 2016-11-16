@@ -150,7 +150,7 @@ AC_ARG_WITH([libsuffix],
 # FIXME: add test on HP-UX if the compiler can generate the appropriate binaries
 if test "$enable_64bit" = "yes"; then
    case "${host_os}" in
-      *linux*)	if test "$GXX" = "yes"; then
+      *linux*)	if test "$GXX" = "yes" -a "$ARCH" != "aarch64"; then
 		   CXXFLAGS="$CXXFLAGS -m64"
 		fi
 		if test "$LIBSUFFIX_SET" != "yes"; then
